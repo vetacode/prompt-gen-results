@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Qurban Distribution Calculator | Kalkulator Distribusi Qurban Modern
+    </title>
+
+    <meta
+      name="description"
+      content="Aplikasi kalkulator distribusi qurban modern untuk panitia masjid, DKM, RT/RW dan komunitas. Hitung karkas, daging, jeroan, kupon, kresek, simulasi pembagian dan print laporan realtime."
+    />
+
+    <meta property="og:title" content="Qurban Distribution Calculator" />
+    <meta
+      property="og:description"
+      content="Kalkulator distribusi qurban realtime berbasis karkas. Mobile friendly, print laporan, simulasi paket dan ekspor CSV."
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Qurban Distribution Calculator" />
+    <meta
+      name="twitter:description"
+      content="Aplikasi modern untuk panitia qurban menghitung distribusi dan simulasi paket qurban."
+    />
+
+    <link
+      rel="canonical"
+      href="https://example.com/qurban-distribution-calculator"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Qurban Distribution Calculator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "description": "Aplikasi distribusi qurban modern berbasis kalkulasi karkas realtime."
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Qurban Distribution Calculator",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "IDR"
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+      }
+
+      .card {
+        @apply bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700;
+      }
+
+      .input {
+        @apply w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-500;
+      }
+
+      .btn {
+        @apply px-4 py-3 rounded-xl font-semibold transition duration-200;
+      }
+
+      .btn-primary {
+        @apply bg-emerald-600 hover:bg-emerald-700 text-white;
+      }
+
+      .btn-secondary {
+        @apply bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600;
+      }
+
+      .fade-in {
+        animation: fade 0.3s ease;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+
+        body {
+          background: white;
+        }
+
+        .card {
+          box-shadow: none;
+          border: 1px solid #ddd;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-all duration-300"
+  >
+    <div class="max-w-7xl mx-auto p-4 md:p-6">
+      <!-- HEADER -->
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+      >
+        <div>
+          <h1 class="text-3xl font-black text-emerald-600">
+            <i class="fa-solid fa-scale-balanced"></i>
+            Qurban Distribution Calculator
+          </h1>
+
+          <p class="text-slate-500 dark:text-slate-400 mt-2">
+            Kalkulator distribusi qurban modern berbasis standar karkas.
+          </p>
+        </div>
+
+        <div class="flex gap-2 no-print">
+          <button onclick="toggleDark()" class="btn btn-secondary">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+
+          <button onclick="resetData()" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+
+          <button onclick="window.print()" class="btn btn-primary">
+            <i class="fa-solid fa-print"></i>
+            Print
+          </button>
+        </div>
+      </div>
+
+      <!-- SUMMARY STICKY -->
+      <div class="sticky top-2 z-50 mb-6">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div class="card p-4">
+            <p class="text-xs text-slate-500">Sapi</p>
+            <h3 id="sumSapi" class="text-2xl font-black">0</h3>
+          </div>
+
+          <div class="card p-4">
+            <p class="text-xs text-slate-500">Kambing</p>
+            <h3 id="sumKambing" class="text-2xl font-black">0</h3>
+          </div>
+
+          <div class="card p-4">
+            <p class="text-xs text-slate-500">Domba</p>
+            <h3 id="sumDomba" class="text-2xl font-black">0</h3>
+          </div>
+
+          <div class="card p-4">
+            <p class="text-xs text-slate-500">Total Hewan</p>
+            <h3 id="sumTotal" class="text-2xl font-black">0</h3>
+          </div>
+
+          <div class="card p-4">
+            <p class="text-xs text-slate-500">Total Bobot</p>
+            <h3 id="sumBobot" class="text-2xl font-black">0 Kg</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT HEWAN -->
+      <section class="card p-5 mb-6 fade-in">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">
+            <i class="fa-solid fa-cow text-emerald-600"></i>
+            Input Data Hewan
+          </h2>
+
+          <button onclick="addRow()" class="btn btn-primary no-print">
+            <i class="fa-solid fa-plus"></i>
+            Tambah Hewan
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[700px]">
+            <thead>
+              <tr class="text-left text-sm text-slate-500">
+                <th class="pb-3">Jenis Hewan</th>
+                <th class="pb-3">Bobot/Ekor (Kg)</th>
+                <th class="pb-3">Jumlah</th>
+                <th class="pb-3">Aksi</th>
+              </tr>
+            </thead>
+
+            <tbody id="animalTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- HASIL KARKAS -->
+      <section class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="card p-5">
+          <h2 class="text-xl font-bold mb-4 text-emerald-600">Hasil Sapi</h2>
+
+          <div id="cowResult" class="space-y-3"></div>
+        </div>
+
+        <div class="card p-5">
+          <h2 class="text-xl font-bold mb-4 text-emerald-600">
+            Hasil Kambing/Domba
+          </h2>
+
+          <div id="goatResult" class="space-y-3"></div>
+        </div>
+      </section>
+
+      <!-- PRESET -->
+      <section class="card p-5 mb-6 no-print">
+        <h2 class="text-xl font-bold mb-4">
+          <i class="fa-solid fa-box text-emerald-600"></i>
+          Preset Paket Cepat
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-3">
+          <button onclick="preset('hemat')" class="btn btn-secondary">
+            Paket Hemat
+          </button>
+
+          <button onclick="preset('normal')" class="btn btn-secondary">
+            Paket Normal
+          </button>
+
+          <button onclick="preset('premium')" class="btn btn-secondary">
+            Paket Premium
+          </button>
+        </div>
+      </section>
+
+      <!-- KOMPOSISI -->
+      <section class="card p-5 mb-6 fade-in">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">
+            <i class="fa-solid fa-bag-shopping text-emerald-600"></i>
+            Komposisi Kresek
+          </h2>
+
+          <select
+            id="packageMode"
+            class="input max-w-[220px]"
+            onchange="calculate()"
+          >
+            <option value="sapi">Paket Sapi</option>
+            <option value="kambing">Paket Kambing/Domba</option>
+            <option value="mix">Paket MIX</option>
+          </select>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-4">
+          <div>
+            <label class="text-sm">Daging Sapi (gr)</label>
+            <input
+              type="number"
+              id="beefInput"
+              class="input"
+              value="900"
+              oninput="calculate()"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm">Daging Kambing (gr)</label>
+            <input
+              type="number"
+              id="goatInput"
+              class="input"
+              value="0"
+              oninput="calculate()"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm">Jeroan (gr)</label>
+            <input
+              type="number"
+              id="jeroanInput"
+              class="input"
+              value="200"
+              oninput="calculate()"
+            />
+          </div>
+
+          <div>
+            <label class="text-sm">Tulang (gr)</label>
+            <input
+              type="number"
+              id="tulangInput"
+              class="input"
+              value="300"
+              oninput="calculate()"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- SIMULASI -->
+      <section class="card p-5 mb-6">
+        <h2 class="text-xl font-bold mb-4">
+          <i class="fa-solid fa-chart-pie text-emerald-600"></i>
+          Simulasi Distribusi
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="flex justify-between">
+              <span>Berat per Kresek</span>
+              <strong id="bagWeight">0 Kg</strong>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Maksimal Kresek</span>
+              <strong id="maxBag">0</strong>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Total Kupon</span>
+              <strong id="couponTotal">0</strong>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Estimasi Berat Dibagikan</span>
+              <strong id="distributedWeight">0 Kg</strong>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Status Stok</span>
+                <span
+                  id="statusBadge"
+                  class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700"
+                >
+                  Aman
+                </span>
+              </div>
+
+              <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  id="stockBar"
+                  class="h-full bg-emerald-500 transition-all duration-300"
+                  style="width: 70%"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <canvas id="distributionChart" height="250"></canvas>
+          </div>
+        </div>
+
+        <div
+          id="warningBox"
+          class="mt-5 hidden rounded-xl border border-red-300 bg-red-50 text-red-700 p-4"
+        ></div>
+      </section>
+
+      <!-- EXPORT -->
+      <section class="card p-5 mb-12 no-print">
+        <h2 class="text-xl font-bold mb-4">
+          <i class="fa-solid fa-file-export text-emerald-600"></i>
+          Export & Laporan
+        </h2>
+
+        <div class="flex flex-wrap gap-3">
+          <button onclick="exportCSV()" class="btn btn-secondary">
+            <i class="fa-solid fa-file-csv"></i>
+            Export CSV
+          </button>
+
+          <button onclick="exportPDF()" class="btn btn-primary">
+            <i class="fa-solid fa-file-pdf"></i>
+            Export PDF
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const standards = {
+        sapi: {
+          karkas: 0.5,
+          daging: 0.5,
+          tulang: 0.15,
+          jeroan: 0.1,
+          pengurban: 0.1,
+        },
+        kambing: {
+          karkas: 0.482,
+          daging: 0.45,
+          tulang: 0.1,
+          jeroan: 0.0985,
+          pengurban: 0.1,
+        },
+        domba: {
+          karkas: 0.482,
+          daging: 0.45,
+          tulang: 0.1,
+          jeroan: 0.0985,
+          pengurban: 0.1,
+        },
+      };
+
+      let chart;
+
+      const animalTable = document.getElementById('animalTable');
+
+      function saveData() {
+        localStorage.setItem('qurbanData', JSON.stringify(getRowsData()));
+      }
+
+      function loadData() {
+        const data = JSON.parse(localStorage.getItem('qurbanData'));
+
+        if (data && data.length) {
+          data.forEach((d) => addRow(d.type, d.weight, d.qty));
+        } else {
+          addRow();
+        }
+      }
+
+      function addRow(type = 'sapi', weight = 500, qty = 1) {
+        const row = document.createElement('tr');
+
+        row.className =
+          'border-b border-slate-100 dark:border-slate-700 fade-in';
+
+        row.innerHTML = `
+    <td class="py-3">
+      <select class="input type">
+        <option value="sapi" ${type === 'sapi' ? 'selected' : ''}>Sapi</option>
+        <option value="kambing" ${type === 'kambing' ? 'selected' : ''}>Kambing</option>
+        <option value="domba" ${type === 'domba' ? 'selected' : ''}>Domba</option>
+      </select>
+    </td>
+
+    <td class="py-3">
+      <input type="number" class="input weight" value="${weight}">
+    </td>
+
+    <td class="py-3">
+      <input type="number" class="input qty" value="${qty}">
+    </td>
+
+    <td class="py-3">
+      <div class="flex gap-2">
+        <button onclick="duplicateRow(this)" class="btn btn-secondary">
+          <i class="fa-solid fa-copy"></i>
+        </button>
+
+        <button onclick="removeRow(this)" class="btn btn-secondary">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </td>
+  `;
+
+        animalTable.appendChild(row);
+
+        row.querySelectorAll('input,select').forEach((el) => {
+          el.addEventListener('input', calculate);
+        });
+
+        calculate();
+      }
+
+      function removeRow(btn) {
+        btn.closest('tr').remove();
+        calculate();
+      }
+
+      function duplicateRow(btn) {
+        const row = btn.closest('tr');
+
+        const type = row.querySelector('.type').value;
+        const weight = row.querySelector('.weight').value;
+        const qty = row.querySelector('.qty').value;
+
+        addRow(type, weight, qty);
+      }
+
+      function getRowsData() {
+        return [...document.querySelectorAll('#animalTable tr')].map((row) => ({
+          type: row.querySelector('.type').value,
+          weight: parseFloat(row.querySelector('.weight').value) || 0,
+          qty: parseFloat(row.querySelector('.qty').value) || 0,
+        }));
+      }
+
+      function renderResult(target, data) {
+        const html = `
+    ${item('Karkas', data.karkas)}
+    ${item('Daging', data.daging)}
+    ${item('Tulang', data.tulang)}
+    ${item('Jeroan', data.jeroan)}
+    ${item('Jatah Pengurban', data.pengurban)}
+  `;
+
+        document.getElementById(target).innerHTML = html;
+      }
+
+      function item(label, val) {
+        return `
+    <div class="flex justify-between bg-slate-50 dark:bg-slate-900 rounded-xl px-4 py-3">
+      <span>${label}</span>
+      <strong>${val.toFixed(2)} Kg</strong>
+    </div>
+  `;
+      }
+
+      function calculate() {
+        const rows = getRowsData();
+
+        saveData();
+
+        let sapi = {
+          karkas: 0,
+          daging: 0,
+          tulang: 0,
+          jeroan: 0,
+          pengurban: 0,
+        };
+
+        let goat = {
+          karkas: 0,
+          daging: 0,
+          tulang: 0,
+          jeroan: 0,
+          pengurban: 0,
+        };
+
+        let sumSapi = 0;
+        let sumKambing = 0;
+        let sumDomba = 0;
+        let totalBobot = 0;
+
+        rows.forEach((r) => {
+          const totalWeight = r.weight * r.qty;
+          totalBobot += totalWeight;
+
+          const std = standards[r.type];
+
+          const karkas = totalWeight * std.karkas;
+
+          const result = {
+            karkas,
+            daging: karkas * std.daging,
+            tulang: karkas * std.tulang,
+            jeroan: karkas * std.jeroan,
+            pengurban: karkas * std.pengurban,
+          };
+
+          if (r.type === 'sapi') {
+            sumSapi += r.qty;
+
+            Object.keys(sapi).forEach((k) => {
+              sapi[k] += result[k];
+            });
+          } else {
+            if (r.type === 'kambing') sumKambing += r.qty;
+            if (r.type === 'domba') sumDomba += r.qty;
+
+            Object.keys(goat).forEach((k) => {
+              goat[k] += result[k];
+            });
+          }
+        });
+
+        document.getElementById('sumSapi').innerText = sumSapi;
+        document.getElementById('sumKambing').innerText = sumKambing;
+        document.getElementById('sumDomba').innerText = sumDomba;
+        document.getElementById('sumTotal').innerText =
+          sumSapi + sumKambing + sumDomba;
+        document.getElementById('sumBobot').innerText =
+          totalBobot.toFixed(1) + ' Kg';
+
+        renderResult('cowResult', sapi);
+        renderResult('goatResult', goat);
+
+        simulate(sapi, goat);
+      }
+
+      function simulate(sapi, goat) {
+        const mode = document.getElementById('packageMode').value;
+
+        const beef = Number(document.getElementById('beefInput').value) / 1000;
+        const goatMeat =
+          Number(document.getElementById('goatInput').value) / 1000;
+        const jeroan =
+          Number(document.getElementById('jeroanInput').value) / 1000;
+        const tulang =
+          Number(document.getElementById('tulangInput').value) / 1000;
+
+        const weight = beef + goatMeat + jeroan + tulang;
+
+        document.getElementById('bagWeight').innerText =
+          weight.toFixed(2) + ' Kg';
+
+        let maxBeef = beef > 0 ? sapi.daging / beef : Infinity;
+        let maxGoat = goatMeat > 0 ? goat.daging / goatMeat : Infinity;
+
+        let maxJeroan =
+          jeroan > 0 ? (sapi.jeroan + goat.jeroan) / jeroan : Infinity;
+        let maxTulang =
+          tulang > 0 ? (sapi.tulang + goat.tulang) / tulang : Infinity;
+
+        const maxBag = Math.floor(
+          Math.min(maxBeef, maxGoat, maxJeroan, maxTulang),
+        );
+
+        document.getElementById('maxBag').innerText = maxBag;
+        document.getElementById('couponTotal').innerText = maxBag;
+        document.getElementById('distributedWeight').innerText =
+          (maxBag * weight).toFixed(1) + ' Kg';
+
+        const warningBox = document.getElementById('warningBox');
+
+        let warnings = [];
+
+        if (maxBeef < maxBag) {
+          warnings.push('Stok daging sapi tidak mencukupi.');
+        }
+
+        if (maxGoat < maxBag) {
+          warnings.push('Stok daging kambing/domba tidak mencukupi.');
+        }
+
+        if (maxBag <= 0) {
+          warnings.push('Komposisi paket terlalu besar dibanding stok.');
+        }
+
+        if (warnings.length) {
+          warningBox.classList.remove('hidden');
+          warningBox.innerHTML = warnings.join('<br>');
+        } else {
+          warningBox.classList.add('hidden');
+        }
+
+        let status = 'Aman';
+        let statusClass = 'bg-emerald-100 text-emerald-700';
+        let percent = 70;
+
+        if (maxBag < 50) {
+          status = 'Hampir Habis';
+          statusClass = 'bg-yellow-100 text-yellow-700';
+          percent = 35;
+        }
+
+        if (maxBag <= 0) {
+          status = 'Over Distribusi';
+          statusClass = 'bg-red-100 text-red-700';
+          percent = 10;
+        }
+
+        const badge = document.getElementById('statusBadge');
+
+        badge.innerText = status;
+        badge.className = `px-3 py-1 rounded-full text-xs font-bold ${statusClass}`;
+
+        document.getElementById('stockBar').style.width = percent + '%';
+
+        renderChart(sapi, goat);
+      }
+
+      function preset(type) {
+        if (type === 'hemat') {
+          setValues(700, 0, 200, 200);
+        }
+
+        if (type === 'normal') {
+          setValues(900, 0, 200, 300);
+        }
+
+        if (type === 'premium') {
+          setValues(1200, 0, 300, 300);
+        }
+      }
+
+      function setValues(beef, goat, jeroan, tulang) {
+        document.getElementById('beefInput').value = beef;
+        document.getElementById('goatInput').value = goat;
+        document.getElementById('jeroanInput').value = jeroan;
+        document.getElementById('tulangInput').value = tulang;
+
+        calculate();
+      }
+
+      function renderChart(sapi, goat) {
+        const ctx = document.getElementById('distributionChart');
+
+        if (chart) {
+          chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Daging Sapi', 'Daging Kambing', 'Jeroan', 'Tulang'],
+            datasets: [
+              {
+                data: [
+                  sapi.daging,
+                  goat.daging,
+                  sapi.jeroan + goat.jeroan,
+                  sapi.tulang + goat.tulang,
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+        });
+      }
+
+      function exportCSV() {
+        const rows = getRowsData();
+
+        let csv = 'Jenis,Bobot,Jumlah\n';
+
+        rows.forEach((r) => {
+          csv += `${r.type},${r.weight},${r.qty}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+
+        a.href = URL.createObjectURL(blob);
+        a.download = 'qurban-data.csv';
+        a.click();
+      }
+
+      function exportPDF() {
+        window.print();
+      }
+
+      function toggleDark() {
+        document.documentElement.classList.toggle('dark');
+
+        localStorage.setItem(
+          'darkMode',
+          document.documentElement.classList.contains('dark'),
+        );
+      }
+
+      function resetData() {
+        if (confirm('Reset semua data?')) {
+          localStorage.removeItem('qurbanData');
+          location.reload();
+        }
+      }
+
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark');
+      }
+
+      loadData();
+    </script>
+  </body>
+</html>
