@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PromptGen - Super Landing Page Prompt Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #f8fafc;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .dark-premium {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, #3b82f6, #2dd4bf);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+
+      .tab-active {
+        border-bottom: 2px solid #3b82f6;
+        color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body class="text-slate-800 antialiased">
+    <!-- Header / Navigation -->
+    <nav
+      class="sticky top-0 z-50 glass-card border-b border-slate-200 px-6 py-4 flex justify-between items-center"
+    >
+      <div class="flex items-center gap-2">
+        <div class="bg-blue-600 p-2 rounded-lg">
+          <i class="fas fa-bolt text-white"></i>
+        </div>
+        <span class="text-xl font-extrabold tracking-tight"
+          >Prompt<span class="text-blue-600">Gen</span></span
+        >
+      </div>
+      <div class="hidden md:flex gap-6 text-sm font-medium">
+        <a href="#" class="hover:text-blue-600 transition">Dashboard</a>
+        <a href="#" class="hover:text-blue-600 transition">Presets</a>
+        <a href="#" class="hover:text-blue-600 transition">SEO Tools</a>
+      </div>
+      <button
+        onclick="generatePrompt()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-bold shadow-lg shadow-blue-200 transition-all transform hover:scale-105 active:scale-95"
+      >
+        <i class="fas fa-magic mr-2"></i> Generate Prompt
+      </button>
+    </nav>
+
+    <main
+      class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8"
+    >
+      <!-- LEFT COLUMN: INPUT FORM -->
+      <div class="lg:col-span-7 space-y-6">
+        <div
+          class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100"
+          data-aos="fade-up"
+        >
+          <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+            <i class="fas fa-briefcase text-blue-500"></i> Informasi Bisnis &
+            Produk
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Nama Bisnis / Brand</label
+              >
+              <input
+                type="text"
+                id="bizName"
+                placeholder="Contoh: CariSolusi Digital"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Produk Utama</label
+              >
+              <input
+                type="text"
+                id="bizProduct"
+                placeholder="Jasa Pembuatan Website"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Harga Mulai Dari</label
+              >
+              <input
+                type="text"
+                id="bizPrice"
+                placeholder="Rp 500.000"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+            <div class="col-span-2">
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Unique Selling Point (USP)</label
+              >
+              <textarea
+                id="bizUSP"
+                rows="2"
+                placeholder="Website langsung ranking di Google, mobile-friendly, pengerjaan 3 hari."
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- TARGET MARKET & GOALS -->
+        <div
+          class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100"
+          data-aos="fade-up"
+        >
+          <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+            <i class="fas fa-bullseye text-red-500"></i> Target & Strategi
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Target Market</label
+              >
+              <select
+                id="targetMarket"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+              >
+                <option value="UMKM / Pemilik Bisnis Lokal">
+                  UMKM / Bisnis Lokal
+                </option>
+                <option value="Corporate / Perusahaan">Corporate</option>
+                <option value="Mahasiswa & Anak Muda">Mahasiswa</option>
+                <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+                <option value="Luxury Market (High-End)">Luxury Market</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Copywriting Framework</label
+              >
+              <select
+                id="copyFramework"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+              >
+                <option value="AIDA (Attention, Interest, Desire, Action)">
+                  AIDA
+                </option>
+                <option value="PAS (Problem, Agitation, Solution)">PAS</option>
+                <option value="Storytelling">Storytelling</option>
+                <option value="FOMO (Fear of Missing Out)">
+                  Fear of Missing Out
+                </option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Tujuan Utama (CTA)</label
+              >
+              <select
+                id="goalCTA"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+              >
+                <option value="Closing via WhatsApp">Closing WhatsApp</option>
+                <option value="Direct Sales / Checkout">Direct Sales</option>
+                <option value="Lead Generation (Form)">Lead Generation</option>
+                <option value="Download Asset / Ebook">Download Ebook</option>
+              </select>
+            </div>
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                >Style Design</label
+              >
+              <select
+                id="designStyle"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+              >
+                <option value="Premium Dark Mode & Gold">Dark Premium</option>
+                <option value="Clean, Minimalist & Airy">
+                  Clean Minimalist
+                </option>
+                <option value="Corporate & Professional">Corporate Blue</option>
+                <option value="Futuristic AI Gradient">Futuristic AI</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO & GEO SETTINGS -->
+        <div
+          class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100"
+          data-aos="fade-up"
+        >
+          <button
+            onclick="toggleSection('seoSection')"
+            class="w-full flex justify-between items-center"
+          >
+            <h2 class="text-lg font-bold flex items-center gap-2">
+              <i class="fas fa-globe text-emerald-500"></i> SEO & Geo
+              Optimization
+            </h2>
+            <i class="fas fa-chevron-down text-slate-400"></i>
+          </button>
+          <div id="seoSection" class="hidden pt-6 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                  >Keyword Utama</label
+                >
+                <input
+                  type="text"
+                  id="seoKeyword"
+                  placeholder="Sewa Mobil Jakarta"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                  >Target Kota/Wilayah</label
+                >
+                <input
+                  type="text"
+                  id="geoTarget"
+                  placeholder="Jakarta Selatan"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+                />
+              </div>
+              <div class="col-span-2">
+                <label
+                  class="block text-xs font-bold text-slate-500 mb-1 uppercase"
+                  >Alamat Lengkap (Untuk Schema)</label
+                >
+                <input
+                  type="text"
+                  id="geoAddress"
+                  placeholder="Jl. Sudirman No. 123..."
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION CHECKLIST -->
+        <div
+          class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100"
+          data-aos="fade-up"
+        >
+          <h2 class="text-lg font-bold mb-4">Struktur Section</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Hero Section"
+                class="section-check w-4 h-4 rounded"
+              />
+              Hero Section</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Problem Section"
+                class="section-check w-4 h-4 rounded"
+              />
+              Problem</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Benefit & Features"
+                class="section-check w-4 h-4 rounded"
+              />
+              Benefit</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Social Proof / Testimoni"
+                class="section-check w-4 h-4 rounded"
+              />
+              Testimoni</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Pricing Table"
+                class="section-check w-4 h-4 rounded"
+              />
+              Pricing</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="FAQ Section"
+                class="section-check w-4 h-4 rounded"
+              />
+              FAQ</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Floating WA Button"
+                class="section-check w-4 h-4 rounded"
+              />
+              Floating WA</label
+            >
+            <label class="flex items-center gap-2 text-sm cursor-pointer"
+              ><input
+                type="checkbox"
+                checked
+                value="Guarantee / Trust Badge"
+                class="section-check w-4 h-4 rounded"
+              />
+              Guarantee</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: PREVIEW & OUTPUT -->
+      <div class="lg:col-span-5 relative">
+        <div class="sticky top-28 space-y-6">
+          <!-- PREVIEW BOX -->
+          <div
+            class="dark-premium rounded-3xl p-6 text-white shadow-2xl overflow-hidden min-h-[500px] flex flex-col"
+            data-aos="zoom-in"
+          >
+            <div class="flex justify-between items-center mb-4">
+              <span
+                class="text-xs font-bold tracking-widest uppercase opacity-60"
+                >Generated Prompt Output</span
+              >
+              <div class="flex gap-2">
+                <button
+                  onclick="copyToClipboard()"
+                  class="hover:bg-white/10 p-2 rounded-lg transition"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+                <button
+                  onclick="downloadPrompt()"
+                  class="hover:bg-white/10 p-2 rounded-lg transition"
+                >
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="promptOutput"
+              class="flex-grow text-sm leading-relaxed text-slate-300 custom-scrollbar overflow-y-auto max-h-[600px] whitespace-pre-wrap"
+            >
+              Silakan lengkapi form di samping, lalu klik tombol "Generate
+              Prompt" untuk mendapatkan instruksi AI yang super detail.
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-white/10 flex gap-2">
+              <button
+                onclick="generatePrompt()"
+                class="flex-1 bg-white text-slate-900 py-3 rounded-xl font-bold hover:bg-blue-50 transition active:scale-95"
+              >
+                Generate Now
+              </button>
+            </div>
+          </div>
+
+          <!-- QUICK TIP -->
+          <div
+            class="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex gap-3 items-start"
+          >
+            <i class="fas fa-lightbulb text-blue-500 mt-1"></i>
+            <p class="text-xs text-blue-800 leading-normal">
+              <strong>Tips:</strong> Gunakan hasil prompt ini pada
+              <strong>ChatGPT Plus (GPT-4)</strong> atau
+              <strong>Claude 3.5 Sonnet</strong> untuk hasil visual direction
+              dan copywriting yang paling maksimal.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TOAST NOTIFICATION -->
+    <div
+      id="toast"
+      class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full text-sm font-medium opacity-0 pointer-events-none transition-all duration-300 z-[100]"
+    >
+      Prompt disalin ke clipboard!
+    </div>
+
+    <script>
+      AOS.init({ duration: 800, once: true });
+
+      function toggleSection(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('hidden');
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('bottom-12');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none');
+          toast.classList.remove('bottom-12');
+        }, 3000);
+      }
+
+      function copyToClipboard() {
+        const text = document.getElementById('promptOutput').innerText;
+        navigator.clipboard.writeText(text);
+        showToast('✅ Prompt berhasil disalin!');
+      }
+
+      function downloadPrompt() {
+        const text = document.getElementById('promptOutput').innerText;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const anchor = document.createElement('a');
+        anchor.download = 'ai-landing-page-prompt.txt';
+        anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+        anchor.click();
+      }
+
+      function generatePrompt() {
+        // Collecting inputs
+        const biz = {
+          name: document.getElementById('bizName').value || '[Nama Bisnis]',
+          product:
+            document.getElementById('bizProduct').value || '[Produk Utama]',
+          price: document.getElementById('bizPrice').value || '[Harga]',
+          usp: document.getElementById('bizUSP').value || '[Keunggulan Produk]',
+          target: document.getElementById('targetMarket').value,
+          copy: document.getElementById('copyFramework').value,
+          cta: document.getElementById('goalCTA').value,
+          style: document.getElementById('designStyle').value,
+          kw: document.getElementById('seoKeyword').value || '[Keyword]',
+          geo: document.getElementById('geoTarget').value || '[Kota]',
+          addr: document.getElementById('geoAddress').value || '[Alamat]',
+        };
+
+        const sections = Array.from(
+          document.querySelectorAll('.section-check:checked'),
+        )
+          .map((cb) => cb.value)
+          .join(', ');
+
+        // Prompt Template Construction
+        const finalPrompt = `PROMPT PERINTAH: BUATKAN LANDING PAGE HIGH-CONVERSION
+
+Bertindaklah sebagai Senior Conversion Rate Optimization (CRO) Expert, UI/UX Designer kelas dunia, dan Direct Response Copywriter.
+
+Tugas Anda: Buatkan struktur lengkap, copywriting, dan panduan visual untuk landing page yang siap menghasilkan penjualan (closing-oriented).
+
+INFORMASI BISNIS:
+- Brand: ${biz.name}
+- Produk/Jasa: ${biz.product}
+- Harga: ${biz.price}
+- Unique Selling Point: ${biz.usp}
+- Target Market: ${biz.target}
+
+STRATEGI MARKETING:
+- Framework Copywriting: ${biz.copy}
+- Tujuan Utama: ${biz.cta}
+- Struktur Section: ${sections}
+
+VISUAL & UI DIRECTION:
+- Gaya Desain: ${biz.style}
+- Layout: Mobile-First Responsive, Modern SaaS Style.
+- Visual: Gunakan panduan gambar ${biz.style === 'Premium Dark Mode & Gold' ? 'high-end photography dengan pencahayaan dramatis' : 'clean UI illustration atau realistic photography'}.
+
+GEO & SEO OPTIMIZATION:
+- Main Keyword: ${biz.kw}
+- Target Lokasi: ${biz.geo}
+- Alamat Fisik: ${biz.addr}
+- Instruksi SEO: Gunakan keyword secara natural di H1, H2, dan Meta Description. Buatkan optimasi Local SEO agar relevan bagi audiens di ${biz.geo}.
+
+OUTPUT YANG DIHARAPKAN:
+1. Copywriting Lengkap: Mulai dari Headline yang "Hooking", Lead Paragraph, hingga FAQ.
+2. Skema Warna: Berikan rekomendasi kode Hex berdasarkan gaya ${biz.style}.
+3. Section-by-Section Detail: Jelaskan apa yang harus ada di setiap bagian (konten + visual).
+4. JSON-LD Schema: Buatkan Schema Markup tipe "LocalBusiness" atau "Product" yang sesuai.
+5. Meta Tag: Berikan rekomendasi Meta Title dan Description yang memiliki CTR tinggi.
+
+Buatkan respon dalam Bahasa Indonesia yang profesional, persuasif, dan mendetail. Gunakan prinsip 'Don't Make Me Think' untuk navigasi dan CTA.`;
+
+        const outputDiv = document.getElementById('promptOutput');
+        outputDiv.innerText = finalPrompt;
+        outputDiv.classList.add('animate-pulse');
+        setTimeout(() => outputDiv.classList.remove('animate-pulse'), 500);
+
+        showToast('🚀 Prompt baru berhasil dibuat!');
+      }
+    </script>
+  </body>
+</html>
