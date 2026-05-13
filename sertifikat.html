@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bulk Certificate Generator</title>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        background: #071421;
+        color: #fff;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 95%;
+        max-width: 1500px;
+        margin: auto;
+        padding: 30px 0;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0c1f33, #102c4a, #183f68);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .hero h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+        color: #fff;
+      }
+
+      .hero p {
+        color: #c7d6e7;
+        max-width: 900px;
+        line-height: 1.8;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 25px;
+      }
+
+      .card {
+        background: #0d1c2b;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      .card h2 {
+        margin-bottom: 20px;
+        font-size: 22px;
+        color: #fff;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #d6e4f3;
+        font-size: 14px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: none;
+        background: #13283d;
+        color: #fff;
+        outline: none;
+      }
+
+      input[type='file'] {
+        padding: 12px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+        font-size: 15px;
+      }
+
+      .btn-gold {
+        background: linear-gradient(135deg, #ffd76a, #c89b2f);
+        color: #000;
+      }
+
+      .btn-gold:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-blue {
+        background: #1d6fff;
+        color: #fff;
+      }
+
+      .btn-dark {
+        background: #162a3d;
+        color: #fff;
+      }
+
+      .table-wrap {
+        overflow: auto;
+        max-height: 350px;
+        border-radius: 14px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: left;
+        font-size: 13px;
+      }
+
+      th {
+        background: #13283d;
+        position: sticky;
+        top: 0;
+      }
+
+      .certificate-wrapper {
+        overflow: auto;
+        padding: 20px;
+        background: #09111b;
+        border-radius: 20px;
+      }
+
+      .certificate {
+        width: 1123px;
+        height: 794px;
+        margin: auto;
+        position: relative;
+        background: linear-gradient(135deg, #ffffff, #eef5ff);
+        overflow: hidden;
+        border: 16px solid #d4af37;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .gold-line {
+        position: absolute;
+        inset: 20px;
+        border: 3px solid #d4af37;
+      }
+
+      .top-decoration {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, #d4af3730, transparent 70%);
+        top: -200px;
+        right: -120px;
+      }
+
+      .bottom-decoration {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, #0f4ea850, transparent 70%);
+        bottom: -150px;
+        left: -100px;
+      }
+
+      .certificate-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        padding: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo-box {
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+        background: #fff;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #d4af37;
+      }
+
+      .logo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .title {
+        text-align: center;
+        flex: 1;
+      }
+
+      .title h1 {
+        font-size: 58px;
+        color: #0c2f56;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+      }
+
+      .title p {
+        color: #666;
+        font-size: 18px;
+      }
+
+      .content {
+        text-align: center;
+        padding: 0 60px;
+      }
+
+      .content h2 {
+        font-size: 54px;
+        color: #c89b2f;
+        margin: 20px 0;
+        word-break: break-word;
+      }
+
+      .content h3 {
+        font-size: 26px;
+        color: #0d2f53;
+        margin-bottom: 15px;
+      }
+
+      .content p {
+        color: #444;
+        line-height: 1.8;
+        font-size: 18px;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .sign-box {
+        text-align: center;
+        width: 250px;
+      }
+
+      .sign-box img {
+        width: 180px;
+        height: 90px;
+        object-fit: contain;
+      }
+
+      .line {
+        border-top: 2px solid #000;
+        margin-top: 10px;
+        padding-top: 8px;
+        color: #222;
+        font-size: 14px;
+      }
+
+      .stamp {
+        width: 130px;
+        height: 130px;
+        border: 5px solid #d4af37;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #d4af37;
+        transform: rotate(-15deg);
+        background: #fff;
+      }
+
+      #qrcode {
+        background: #fff;
+        padding: 10px;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .small {
+        font-size: 13px;
+        color: #bbb;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 1200px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .certificate-wrapper {
+          overflow: auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="hero">
+        <h1>Bulk Certificate Generator</h1>
+        <p>
+          Aplikasi generator sertifikat massal premium untuk komunitas, webinar,
+          sekolah, pelatihan, membership, dan event online. Generate ratusan
+          sertifikat otomatis hanya dari upload Excel atau CSV.
+        </p>
+      </div>
+
+      <div class="grid">
+        <!-- LEFT -->
+        <div>
+          <div class="card">
+            <h2>Upload Data Peserta</h2>
+
+            <div class="form-group">
+              <label>Upload CSV / Excel</label>
+              <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" />
+            </div>
+
+            <div class="form-group">
+              <label>Nama Penyelenggara</label>
+              <input
+                type="text"
+                id="organizer"
+                value="Komunitas Premium Indonesia"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Nama Event</label>
+              <input
+                type="text"
+                id="eventName"
+                value="Premium Membership Program"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Tanggal</label>
+              <input type="date" id="dateField" />
+            </div>
+
+            <div class="form-group">
+              <label>Warna Template</label>
+              <input type="color" id="themeColor" value="#d4af37" />
+            </div>
+
+            <div class="form-group">
+              <label>Upload Logo</label>
+              <input type="file" id="logoUpload" accept="image/*" />
+            </div>
+
+            <div class="form-group">
+              <label>Upload Tanda Tangan</label>
+              <input type="file" id="signUpload" accept="image/*" />
+            </div>
+
+            <button class="btn btn-gold" onclick="generatePreview()">
+              Preview Sertifikat
+            </button>
+
+            <button class="btn btn-blue" onclick="downloadPDF()">
+              Export PDF
+            </button>
+
+            <button class="btn btn-dark" onclick="downloadPNG()">
+              Export PNG
+            </button>
+
+            <button class="btn btn-gold" onclick="downloadAllZIP()">
+              Export Semua ZIP
+            </button>
+
+            <div class="small">
+              Format kolom Excel: nama, nomor_sertifikat, nama_event, tanggal,
+              predikat, email
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 25px">
+            <h2>Data Peserta</h2>
+
+            <div class="table-wrap">
+              <table id="dataTable">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>No Sertifikat</th>
+                    <th>Predikat</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+          <div class="card">
+            <h2>Preview Sertifikat</h2>
+
+            <div class="certificate-wrapper">
+              <div class="certificate" id="certificate">
+                <div class="gold-line"></div>
+                <div class="top-decoration"></div>
+                <div class="bottom-decoration"></div>
+
+                <div class="certificate-content">
+                  <div class="header">
+                    <div class="logo-box">
+                      <img
+                        id="logoPreview"
+                        src="https://dummyimage.com/300x300/ffffff/000000&text=LOGO"
+                      />
+                    </div>
+
+                    <div class="title">
+                      <h1>SERTIFICATE</h1>
+                      <p>Membership Certificate</p>
+                    </div>
+
+                    <div id="qrcode"></div>
+                  </div>
+
+                  <div class="content">
+                    <p>Diberikan Kepada</p>
+
+                    <h2 id="participantName">NAMA PESERTA</h2>
+
+                    <h3 id="participantPredicate">Premium Member</h3>
+
+                    <p>
+                      Sebagai peserta resmi dan anggota dari program
+                      <strong id="previewEvent">
+                        Premium Membership Program
+                      </strong>
+                      yang diselenggarakan oleh
+                      <strong id="previewOrganizer">
+                        Komunitas Premium Indonesia </strong
+                      >.
+                    </p>
+
+                    <br />
+
+                    <p>
+                      Nomor Sertifikat:
+                      <strong id="certificateNumber"> CERT-001 </strong>
+                    </p>
+
+                    <p>
+                      Tanggal:
+                      <strong id="certificateDate"> 13 Mei 2026 </strong>
+                    </p>
+                  </div>
+
+                  <div class="footer">
+                    <div class="stamp">VERIFIED</div>
+
+                    <div class="sign-box">
+                      <img
+                        id="signPreview"
+                        src="https://dummyimage.com/300x120/ffffff/000000&text=Signature"
+                      />
+
+                      <div class="line">
+                        <span id="organizerSign">
+                          Komunitas Premium Indonesia
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <button class="btn btn-blue" onclick="prevParticipant()">
+                ← Prev
+              </button>
+
+              <button class="btn btn-blue" onclick="nextParticipant()">
+                Next →
+              </button>
+
+              <button class="btn btn-dark" onclick="copyVerificationLink()">
+                Copy Link Verifikasi
+              </button>
+
+              <button class="btn btn-gold" onclick="autoGenerateNumber()">
+                Auto Nomor Sertifikat
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let participantData = [];
+      let currentIndex = 0;
+
+      const tbody = document.querySelector('#dataTable tbody');
+
+      document.getElementById('dateField').valueAsDate = new Date();
+
+      function formatDate(date) {
+        return new Date(date).toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        });
+      }
+
+      document
+        .getElementById('excelFile')
+        .addEventListener('change', handleFile);
+
+      function handleFile(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const data = new Uint8Array(event.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          participantData = XLSX.utils.sheet_to_json(sheet);
+
+          renderTable();
+
+          if (participantData.length > 0) {
+            currentIndex = 0;
+            updateCertificate(participantData[0]);
+          }
+        };
+
+        reader.readAsArrayBuffer(file);
+      }
+
+      function renderTable() {
+        tbody.innerHTML = '';
+
+        participantData.forEach((item, index) => {
+          tbody.innerHTML += `
+      <tr onclick="selectParticipant(${index})" style="cursor:pointer">
+        <td>${item.nama || ''}</td>
+        <td>${item.nomor_sertifikat || ''}</td>
+        <td>${item.predikat || ''}</td>
+      </tr>
+    `;
+        });
+      }
+
+      function selectParticipant(index) {
+        currentIndex = index;
+        updateCertificate(participantData[index]);
+      }
+
+      function updateCertificate(data) {
+        const organizer = document.getElementById('organizer').value;
+
+        const eventName = document.getElementById('eventName').value;
+
+        const dateValue = document.getElementById('dateField').value;
+
+        document.getElementById('participantName').innerText =
+          data.nama || 'NAMA PESERTA';
+
+        document.getElementById('participantPredicate').innerText =
+          data.predikat || 'Premium Member';
+
+        document.getElementById('certificateNumber').innerText =
+          data.nomor_sertifikat || 'CERT-001';
+
+        document.getElementById('previewEvent').innerText =
+          data.nama_event || eventName;
+
+        document.getElementById('previewOrganizer').innerText = organizer;
+
+        document.getElementById('organizerSign').innerText = organizer;
+
+        document.getElementById('certificateDate').innerText =
+          data.tanggal || formatDate(dateValue);
+
+        autoResizeName();
+
+        generateQRCode(
+          'https://verifikasi-sertifikat.com/' +
+            (data.nomor_sertifikat || 'CERT-001'),
+        );
+      }
+
+      function generatePreview() {
+        if (participantData.length > 0) {
+          updateCertificate(participantData[currentIndex]);
+        }
+
+        updateThemeColor();
+      }
+
+      function prevParticipant() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateCertificate(participantData[currentIndex]);
+        }
+      }
+
+      function nextParticipant() {
+        if (currentIndex < participantData.length - 1) {
+          currentIndex++;
+          updateCertificate(participantData[currentIndex]);
+        }
+      }
+
+      function autoResizeName() {
+        const el = document.getElementById('participantName');
+        const len = el.innerText.length;
+
+        if (len > 30) {
+          el.style.fontSize = '40px';
+        } else if (len > 20) {
+          el.style.fontSize = '46px';
+        } else {
+          el.style.fontSize = '54px';
+        }
+      }
+
+      function generateQRCode(text) {
+        const qr = document.getElementById('qrcode');
+        qr.innerHTML = '';
+
+        new QRCode(qr, {
+          text: text,
+          width: 100,
+          height: 100,
+        });
+      }
+
+      function updateThemeColor() {
+        const color = document.getElementById('themeColor').value;
+
+        document.querySelector('.certificate').style.borderColor = color;
+
+        document.querySelector('.gold-line').style.borderColor = color;
+      }
+
+      document
+        .getElementById('logoUpload')
+        .addEventListener('change', function (e) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            document.getElementById('logoPreview').src = event.target.result;
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+      document
+        .getElementById('signUpload')
+        .addEventListener('change', function (e) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            document.getElementById('signPreview').src = event.target.result;
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+      async function downloadPNG() {
+        const cert = document.getElementById('certificate');
+
+        const canvas = await html2canvas(cert, {
+          scale: 2,
+        });
+
+        const link = document.createElement('a');
+
+        link.download = 'certificate.png';
+
+        link.href = canvas.toDataURL('image/png');
+
+        link.click();
+      }
+
+      async function downloadPDF() {
+        const cert = document.getElementById('certificate');
+
+        const canvas = await html2canvas(cert, { scale: 2 });
+
+        const imgData = canvas.toDataURL('image/png');
+
+        const { jsPDF } = window.jspdf;
+
+        const pdf = new jsPDF('landscape', 'mm', 'a4');
+
+        pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
+
+        pdf.save('certificate.pdf');
+      }
+
+      async function downloadAllZIP() {
+        if (participantData.length === 0) {
+          alert('Upload data peserta terlebih dahulu.');
+          return;
+        }
+
+        const zip = new JSZip();
+
+        for (let i = 0; i < participantData.length; i++) {
+          updateCertificate(participantData[i]);
+
+          await new Promise((r) => setTimeout(r, 300));
+
+          const cert = document.getElementById('certificate');
+
+          const canvas = await html2canvas(cert, { scale: 2 });
+
+          const blob = await new Promise((resolve) => canvas.toBlob(resolve));
+
+          zip.file(`${participantData[i].nama}.png`, blob);
+        }
+
+        const content = await zip.generateAsync({ type: 'blob' });
+
+        saveAs(content, 'all-certificates.zip');
+      }
+
+      function autoGenerateNumber() {
+        participantData = participantData.map((item, index) => {
+          item.nomor_sertifikat = 'CERT-' + String(index + 1).padStart(4, '0');
+
+          return item;
+        });
+
+        renderTable();
+
+        if (participantData.length > 0) {
+          updateCertificate(participantData[currentIndex]);
+        }
+      }
+
+      function copyVerificationLink() {
+        const number = document.getElementById('certificateNumber').innerText;
+
+        const link = 'https://verifikasi-sertifikat.com/' + number;
+
+        navigator.clipboard.writeText(link);
+
+        alert('Link verifikasi berhasil dicopy.');
+      }
+    </script>
+  </body>
+</html>
