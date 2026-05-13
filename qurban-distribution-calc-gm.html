@@ -943,14 +943,73 @@
 
       function exportCSV() {
         const rows = getRowsData();
-        let csv =
-          'Jenis,Bobot,Jumlah\n' +
-          rows.map((r) => `${r.type},${r.weight},${r.qty}`).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'laporan-qurban.csv';
-        a.click();
+        const p_qty = document.getElementById('p_qty').value;
+        const n_qty = document.getElementById('n_qty').value;
+        const h_qty = document.getElementById('h_qty').value;
+
+        const rem_beef = document.getElementById('rem_beef').innerText;
+        const rem_goat = document.getElementById('rem_goat').innerText;
+        const total_kresek = document.getElementById('total_kresek').innerText;
+        const total_dist =
+          document.getElementById('total_dist_weight').innerText;
+
+        let csv = 'LAPORAN PERENCANAAN DISTRIBUSI QURBAN\n';
+        csv += 'Tanggal Eksport,' + new Date().toLocaleString('id-ID') + '\n\n';
+
+        // SECTION 1: RINGKASAN DATA HEWAN
+        csv += '--- RINGKASAN DATA HEWAN ---\n';
+        csv += 'Jenis,Bobot Satuan (Kg),Jumlah Ekor,Total Bobot Hidup (Kg)\n';
+        rows.forEach((r) => {
+          csv += `${r.type},${r.weight},${r.qty},${(r.weight * r.qty).toFixed(2)}\n`;
+        });
+        csv += `TOTAL,,${document.getElementById('sumTotal').innerText},${document.getElementById('sumBobot').innerText}\n\n`;
+
+        // SECTION 2: HASIL ESTIMASI KARKAS (MODULAR)
+        csv += '--- ESTIMASI PRODUKSI DAGING ---\n';
+        csv += 'Kategori,Daging Bersih (Kg),Tulang (Kg),Jeroan (Kg)\n';
+
+        // Helper function untuk ambil angka saja dari text
+        const parseVal = (id) =>
+          document.getElementById(id).innerText.replace(' Kg', '');
+
+        // Kita perlu menghitung manual atau ambil dari UI (UI saat ini dipisah Sapi & Kambing)
+        csv += 'Total Stok Tersedia,,\n';
+        csv += 'Sapi,' + parseVal('cowResult').split('\n')[1].trim() + '\n'; // Mengambil baris Daging Bersih
+        csv +=
+          'Kambing/Domba,' +
+          parseVal('goatResult').split('\n')[1].trim() +
+          '\n\n';
+
+        // SECTION 3: RENCANA PAKET & DISTRIBUSI
+        csv += '--- RENCANA DISTRIBUSI PAKET ---\n';
+        csv +=
+          'Nama Paket,Jumlah Kupon,Komposisi Sapi (gr),Komposisi Kambing (gr),Jeroan (gr),Tulang (gr)\n';
+
+        const getInp = (id) => document.getElementById(id).value;
+        csv += `Premium,${p_qty},${getInp('p_beef')},0,${getInp('p_jeroan')},0\n`;
+        csv += `Normal,${n_qty},${getInp('n_beef')},0,${getInp('n_jeroan')},${getInp('n_tulang')}\n`;
+        csv += `Hemat/Mix,${h_qty},${getInp('h_beef')},${getInp('h_goat')},${getInp('h_jeroan')},${getInp('h_tulang')}\n\n`;
+
+        // SECTION 4: KESIMPULAN AKHIR
+        csv += '--- KESIMPULAN AKHIR ---\n';
+        csv += `Total Kresek/Kupon Di cetak,${total_kresek}\n`;
+        csv += `Total Berat Daging Dibagikan,${total_dist}\n`;
+        csv += `Sisa Stok Daging Sapi,${rem_beef}\n`;
+        csv += `Sisa Stok Daging Kambing,${rem_goat}\n`;
+
+        // Create Download
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute(
+          'download',
+          `Laporan_Qurban_CariSolusi_${new Date().getTime()}.csv`,
+        );
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
       function resetData() {
