@@ -1,773 +1,531 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Qurban Distribution Calculator</title>
     <meta
       name="description"
-      content="Kalkulator distribusi daging qurban modern untuk panitia masjid, RT/RW, dan komunitas. Hitung karkas, paket kresek, dan kupon secara realtime."
+      content="Kalkulator distribusi daging qurban modern berbasis karkas untuk panitia masjid, RT/RW, dan komunitas."
     />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        content: [],
+      };
+    </script>
+
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@500;600&amp;display=swap');
-
-      :root {
-        --primary: 16 185 129;
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
       }
-
-      .tail-container {
-        font-family: 'Inter', system_ui, sans-serif;
-      }
-
       .header-font {
         font-family: 'Poppins', sans-serif;
-      }
-
-      .card-hover {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .card-hover:hover {
-        transform: translateY(-4px);
-        box-shadow:
-          0 20px 25px -5px rgb(0 0 0 / 0.1),
-          0 8px 10px -6px rgb(0 0 0 / 0.1);
-      }
-
-      table {
-        border-collapse: collapse;
-      }
-
-      .print-section {
-        display: none;
       }
 
       @media print {
         .no-print {
           display: none !important;
         }
-        .print-section {
-          display: block !important;
-        }
         body {
           background: white;
           color: black;
         }
       }
-
-      .input-focus {
-        transition: all 0.2s;
-      }
-
-      .input-focus:focus {
-        box-shadow: 0 0 0 3px rgb(16 185 129 / 0.3);
-      }
     </style>
   </head>
   <body
-    class="tail-container bg-zinc-50 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 min-h-screen"
+    class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen"
   >
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto p-4 md:p-6">
       <!-- HEADER -->
-      <header
-        class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50"
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8"
       >
-        <div class="px-6 py-5 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-inner"
-            >
-              🕌
-            </div>
-            <div>
-              <h1 class="header-font text-2xl font-semibold tracking-tight">
-                QurbanCalc
-              </h1>
-              <p
-                class="text-xs text-emerald-600 dark:text-emerald-500 font-medium"
-              >
-                Distribusi Daging • Realtime
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-4">
-            <button
-              onclick="toggleDarkMode()"
-              class="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            >
-              <i id="theme-icon" class="fas fa-moon text-xl"></i>
-            </button>
-
-            <button
-              onclick="resetAllData()"
-              class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
-            >
-              <i class="fas fa-trash"></i>
-              <span class="hidden sm:inline">Reset</span>
-            </button>
-
-            <button
-              onclick="
-                saveToLocalStorage();
-                alert('Data tersimpan di browser!');
-              "
-              class="flex items-center gap-2 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 px-4 py-2 rounded-2xl text-sm font-medium hover:border-emerald-300 transition-colors"
-            >
-              <i class="fas fa-save"></i>
-              <span class="hidden sm:inline">Simpan</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div class="p-6 space-y-8">
-        <!-- INPUT HEWAN -->
-        <div
-          class="bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 p-6"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
-              <i class="fas fa-cow text-emerald-600 text-2xl"></i>
-              <div>
-                <h2 class="text-xl font-semibold">Data Hewan Qurban</h2>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">
-                  Tambahkan hewan yang disembelih
-                </p>
-              </div>
-            </div>
-            <button
-              onclick="addAnimalRow()"
-              class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-2xl text-sm font-medium transition-all active:scale-95"
-            >
-              <i class="fas fa-plus"></i>
-              <span>Tambah Hewan</span>
-            </button>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full" id="animal-table">
-              <thead>
-                <tr
-                  class="border-b border-zinc-200 dark:border-zinc-700 text-left text-xs uppercase font-medium text-zinc-500"
-                >
-                  <th class="pb-3 pr-4 w-8"></th>
-                  <th class="pb-3">Jenis</th>
-                  <th class="pb-3">Bobot per Ekor (kg)</th>
-                  <th class="pb-3">Jumlah Ekor</th>
-                  <th class="pb-3 text-right">Total Bobot (kg)</th>
-                  <th class="pb-3 w-12"></th>
-                </tr>
-              </thead>
-              <tbody id="animal-body" class="text-sm"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- SUMMARY CARDS -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="summary-cards">
-          <!-- Populated by JS -->
-        </div>
-
-        <!-- HASIL KARKAS -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- SAPI -->
-          <div
-            class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800"
+        <div>
+          <h1
+            class="text-3xl font-black text-emerald-600 header-font flex items-center gap-3"
           >
-            <div class="flex items-center gap-3 mb-5">
-              <div
-                class="w-8 h-8 bg-amber-100 dark:bg-amber-900 text-amber-600 rounded-2xl flex items-center justify-center"
-              >
-                🐂
-              </div>
-              <h3 class="font-semibold text-lg">Hasil Sapi</h3>
-            </div>
-            <div id="sapi-result" class="space-y-4"></div>
-          </div>
-
-          <!-- KAMBING/DOMBA -->
-          <div
-            class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800"
+            <i class="fa-solid fa-scale-balanced"></i>
+            QurbanCalc
+          </h1>
+          <p class="text-slate-500 dark:text-slate-400">
+            Kalkulator Distribusi Qurban • Berbasis Karkas
+          </p>
+        </div>
+        <div class="flex gap-3 no-print">
+          <button
+            onclick="toggleDarkMode()"
+            class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-300"
           >
-            <div class="flex items-center gap-3 mb-5">
-              <div
-                class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900 text-emerald-600 rounded-2xl flex items-center justify-center"
-              >
-                🐐
-              </div>
-              <h3 class="font-semibold text-lg">Hasil Kambing/Domba</h3>
-            </div>
-            <div id="kambing-result" class="space-y-4"></div>
-          </div>
-        </div>
-
-        <!-- KOMPOSISI PAKET -->
-        <div
-          class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800"
-        >
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-semibold flex items-center gap-3">
-              <i class="fas fa-box"></i>
-              Komposisi Paket Kresek
-            </h2>
-
-            <div
-              class="flex bg-zinc-100 dark:bg-zinc-800 rounded-3xl p-1 text-sm"
-            >
-              <button
-                onclick="setPreset('hemat')"
-                id="btn-hemat"
-                class="px-5 py-2 rounded-3xl transition-all font-medium"
-              >
-                Hemat
-              </button>
-              <button
-                onclick="setPreset('normal')"
-                id="btn-normal"
-                class="px-5 py-2 rounded-3xl bg-white dark:bg-zinc-700 shadow transition-all font-medium"
-              >
-                Normal
-              </button>
-              <button
-                onclick="setPreset('premium')"
-                id="btn-premium"
-                class="px-5 py-2 rounded-3xl transition-all font-medium"
-              >
-                Premium
-              </button>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Paket Sapi -->
-            <div>
-              <div
-                class="text-sm font-medium mb-3 flex items-center gap-2 text-amber-600"
-              >
-                <i class="fas fa-cow"></i> Paket Sapi
-              </div>
-              <div class="space-y-4">
-                <div>
-                  <label class="block text-xs text-zinc-500 mb-1"
-                    >Daging Sapi (gram)</label
-                  >
-                  <input
-                    id="daging-sapi-g"
-                    type="number"
-                    value="900"
-                    oninput="simulateDistribution()"
-                    class="w-full input-focus bg-zinc-50 dark:bg-zinc-800 border border-transparent focus:border-emerald-300 rounded-2xl px-4 py-3 text-lg"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs text-zinc-500 mb-1"
-                    >Jeroan (gram)</label
-                  >
-                  <input
-                    id="jeroan-g"
-                    type="number"
-                    value="200"
-                    oninput="simulateDistribution()"
-                    class="w-full input-focus bg-zinc-50 dark:bg-zinc-800 border border-transparent focus:border-emerald-300 rounded-2xl px-4 py-3 text-lg"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs text-zinc-500 mb-1"
-                    >Tulang (gram)</label
-                  >
-                  <input
-                    id="tulang-g"
-                    type="number"
-                    value="300"
-                    oninput="simulateDistribution()"
-                    class="w-full input-focus bg-zinc-50 dark:bg-zinc-800 border border-transparent focus:border-emerald-300 rounded-2xl px-4 py-3 text-lg"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Paket Kambing -->
-            <div>
-              <div
-                class="text-sm font-medium mb-3 flex items-center gap-2 text-emerald-600"
-              >
-                <i class="fas fa-goat"></i> Paket Kambing
-              </div>
-              <div class="space-y-4">
-                <div>
-                  <label class="block text-xs text-zinc-500 mb-1"
-                    >Daging Kambing (gram)</label
-                  >
-                  <input
-                    id="daging-kambing-g"
-                    type="number"
-                    value="700"
-                    oninput="simulateDistribution()"
-                    class="w-full input-focus bg-zinc-50 dark:bg-zinc-800 border border-transparent focus:border-emerald-300 rounded-2xl px-4 py-3 text-lg"
-                  />
-                </div>
-                <div class="h-11"></div>
-                <div class="h-11"></div>
-              </div>
-            </div>
-
-            <!-- Paket MIX -->
-            <div>
-              <div class="text-sm font-medium mb-3 flex items-center gap-2">
-                <i class="fas fa-random"></i> Paket MIX
-              </div>
-              <div
-                class="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-3xl p-5 text-sm space-y-3"
-              >
-                <div class="flex justify-between">
-                  <span class="text-zinc-500"
-                    >Total Kresek yang bisa dibuat</span
-                  >
-                  <span
-                    id="max-kresek"
-                    class="font-bold text-xl text-emerald-600"
-                    >0</span
-                  >
-                </div>
-                <div
-                  class="h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden"
-                >
-                  <div
-                    id="progress-bar"
-                    class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 w-0 transition-all"
-                  ></div>
-                </div>
-                <p
-                  id="status-text"
-                  class="text-xs font-medium text-emerald-600"
-                >
-                  Stok Aman
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SIMULASI DISTRIBUSI -->
-        <div
-          class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800"
-        >
-          <h2 class="text-xl font-semibold mb-6 flex items-center gap-3">
-            <i class="fas fa-calculator"></i>
-            Simulasi Distribusi &amp; Kupon
-          </h2>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-zinc-50 dark:bg-zinc-800 rounded-3xl p-6">
-              <div class="text-xs uppercase tracking-widest text-zinc-500 mb-1">
-                Total Kresek
-              </div>
-              <div
-                id="total-kresek"
-                class="text-5xl font-bold text-emerald-600"
-              >
-                0
-              </div>
-              <div class="text-sm text-zinc-500 mt-1">
-                kresek siap dibagikan
-              </div>
-            </div>
-
-            <div class="bg-zinc-50 dark:bg-zinc-800 rounded-3xl p-6">
-              <div class="text-xs uppercase tracking-widest text-zinc-500 mb-1">
-                Total Kupon
-              </div>
-              <div id="total-kupon" class="text-5xl font-bold text-amber-600">
-                0
-              </div>
-              <div class="text-sm text-zinc-500 mt-1">penerima / jatah</div>
-            </div>
-
-            <div class="bg-zinc-50 dark:bg-zinc-800 rounded-3xl p-6">
-              <div class="text-xs uppercase tracking-widest text-zinc-500 mb-1">
-                Sisa Daging
-              </div>
-              <div id="sisa-daging" class="text-5xl font-bold text-zinc-400">
-                0 kg
-              </div>
-            </div>
-          </div>
-
-          <!-- Chart -->
-          <div class="mt-8">
-            <canvas id="distributionChart" class="w-full h-72"></canvas>
-          </div>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="flex flex-wrap gap-4 no-print">
+            <i id="theme-icon" class="fa-solid fa-moon text-xl"></i>
+          </button>
+          <button
+            onclick="resetData()"
+            class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-red-300"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
           <button
             onclick="window.print()"
-            class="flex-1 md:flex-none bg-zinc-800 hover:bg-black dark:bg-white dark:text-zinc-900 text-white py-4 px-8 rounded-3xl font-semibold flex items-center justify-center gap-3 text-lg transition-all active:scale-[0.97]"
+            class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold flex items-center gap-2"
           >
-            <i class="fas fa-print"></i>
-            CETAK LAPORAN
-          </button>
-
-          <button
-            onclick="exportCSV()"
-            class="flex-1 md:flex-none border border-zinc-300 dark:border-zinc-700 hover:border-emerald-400 py-4 px-8 rounded-3xl font-semibold flex items-center justify-center gap-3 transition-all"
-          >
-            <i class="fas fa-file-csv"></i>
-            Export CSV
+            <i class="fa-solid fa-print"></i>
+            <span class="hidden sm:inline">Cetak Laporan</span>
           </button>
         </div>
       </div>
-    </div>
 
-    <!-- PRINT LAYOUT -->
-    <div class="print-section p-8 max-w-4xl mx-auto bg-white text-black">
-      <div class="text-center border-b pb-6 mb-8">
-        <h1 class="text-4xl font-bold header-font">
-          LAPORAN DISTRIBUSI QURBAN
-        </h1>
-        <p class="text-xl text-emerald-700 mt-2" id="print-date"></p>
+      <!-- SUMMARY -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 sticky top-4 z-50">
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <p class="text-xs text-slate-500">Sapi</p>
+          <h3 id="sumSapi" class="text-3xl font-bold text-emerald-600">0</h3>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <p class="text-xs text-slate-500">Kambing</p>
+          <h3 id="sumKambing" class="text-3xl font-bold">0</h3>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <p class="text-xs text-slate-500">Domba</p>
+          <h3 id="sumDomba" class="text-3xl font-bold">0</h3>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <p class="text-xs text-slate-500">Total Hewan</p>
+          <h3 id="sumTotal" class="text-3xl font-bold">0</h3>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <p class="text-xs text-slate-500">Total Bobot</p>
+          <h3 id="sumBobot" class="text-3xl font-bold">0 Kg</h3>
+        </div>
       </div>
 
-      <div id="print-content"></div>
+      <!-- INPUT HEWAN -->
+      <div
+        class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8"
+      >
+        <div class="flex justify-between items-center mb-5">
+          <h2 class="text-xl font-bold flex items-center gap-3">
+            <i class="fa-solid fa-cow text-emerald-600"></i> Data Hewan Qurban
+          </h2>
+          <button
+            onclick="addRow()"
+            class="px-5 py-3 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 transition-all flex items-center gap-2"
+          >
+            <i class="fa-solid fa-plus"></i> Tambah
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="text-left text-slate-500 text-sm border-b">
+                <th class="pb-4">Jenis</th>
+                <th class="pb-4">Bobot/Ekor (kg)</th>
+                <th class="pb-4">Jumlah Ekor</th>
+                <th class="pb-4 w-24">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="animalTable" class="text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HASIL KARKAS -->
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <h2 class="text-xl font-bold mb-4 text-emerald-600">🐂 Hasil Sapi</h2>
+          <div id="cowResult" class="space-y-3"></div>
+        </div>
+        <div
+          class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700"
+        >
+          <h2 class="text-xl font-bold mb-4 text-emerald-600">
+            🐐 Hasil Kambing/Domba
+          </h2>
+          <div id="goatResult" class="space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- PRESET & KOMPOSISI -->
+      <div
+        class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 mb-8"
+      >
+        <h2 class="text-xl font-bold mb-4">Komposisi Paket Kresek</h2>
+
+        <div class="flex gap-2 mb-6">
+          <button
+            onclick="preset('hemat')"
+            class="flex-1 py-3 rounded-2xl border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
+          >
+            Hemat
+          </button>
+          <button
+            onclick="preset('normal')"
+            class="flex-1 py-3 rounded-2xl border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 bg-emerald-50 dark:bg-emerald-950 border-emerald-300"
+          >
+            Normal
+          </button>
+          <button
+            onclick="preset('premium')"
+            class="flex-1 py-3 rounded-2xl border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
+          >
+            Premium
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label class="text-xs text-slate-500">Daging Sapi (gr)</label>
+            <input
+              id="beefInput"
+              type="number"
+              value="900"
+              oninput="calculate()"
+              class="w-full mt-1 rounded-2xl border border-slate-300 dark:border-slate-600 px-4 py-3 focus:ring-emerald-500"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Daging Kambing (gr)</label>
+            <input
+              id="goatInput"
+              type="number"
+              value="700"
+              oninput="calculate()"
+              class="w-full mt-1 rounded-2xl border border-slate-300 dark:border-slate-600 px-4 py-3 focus:ring-emerald-500"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Jeroan (gr)</label>
+            <input
+              id="jeroanInput"
+              type="number"
+              value="200"
+              oninput="calculate()"
+              class="w-full mt-1 rounded-2xl border border-slate-300 dark:border-slate-600 px-4 py-3 focus:ring-emerald-500"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500">Tulang (gr)</label>
+            <input
+              id="tulangInput"
+              type="number"
+              value="300"
+              oninput="calculate()"
+              class="w-full mt-1 rounded-2xl border border-slate-300 dark:border-slate-600 px-4 py-3 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- SIMULASI -->
+      <div
+        class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 mb-8"
+      >
+        <h2 class="text-xl font-bold mb-6">Simulasi Distribusi</h2>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-6">
+            <div class="flex justify-between text-lg">
+              <span class="text-slate-600 dark:text-slate-400"
+                >Berat per Kresek</span
+              >
+              <strong id="bagWeight">2.1 Kg</strong>
+            </div>
+            <div class="flex justify-between text-lg">
+              <span class="text-slate-600 dark:text-slate-400"
+                >Maksimal Kresek</span
+              >
+              <strong id="maxBag" class="text-emerald-600">245</strong>
+            </div>
+            <div class="flex justify-between text-lg">
+              <span class="text-slate-600 dark:text-slate-400"
+                >Total Kupon</span
+              >
+              <strong id="couponTotal">245</strong>
+            </div>
+            <div class="flex justify-between text-lg">
+              <span class="text-slate-600 dark:text-slate-400"
+                >Estimasi Dibagikan</span
+              >
+              <strong id="distributedWeight">514.5 Kg</strong>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Status Stok</span>
+                <span
+                  id="statusBadge"
+                  class="px-4 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700"
+                  >Aman</span
+                >
+              </div>
+              <div
+                class="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"
+              >
+                <div
+                  id="stockBar"
+                  class="h-full bg-emerald-500 w-[75%] transition-all"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <canvas id="distributionChart" height="220"></canvas>
+          </div>
+        </div>
+
+        <div
+          id="warningBox"
+          class="mt-6 hidden p-4 bg-red-50 dark:bg-red-900/30 border border-red-300 rounded-2xl text-red-700 dark:text-red-400"
+        ></div>
+      </div>
+
+      <div class="flex gap-4 no-print">
+        <button
+          onclick="exportCSV()"
+          class="flex-1 py-4 border border-slate-300 dark:border-slate-600 rounded-3xl hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          Export CSV
+        </button>
+        <button
+          onclick="window.print()"
+          class="flex-1 py-4 bg-emerald-600 text-white rounded-3xl"
+        >
+          Cetak Laporan
+        </button>
+      </div>
     </div>
 
     <script>
-      // Tailwind script
-      function initTailwind() {
-        tailwind.config = {
-          content: [],
-          theme: {
-            extend: {},
-          },
-        };
-      }
-
-      // Data
-      let animals = [];
-      let chartInstance = null;
-
-      // Constants
-      const CONST = {
+      const standards = {
         sapi: {
           karkas: 0.5,
           daging: 0.5,
           tulang: 0.15,
           jeroan: 0.1,
-          jatah: 0.1,
+          pengurban: 0.1,
         },
         kambing: {
           karkas: 0.482,
           daging: 0.45,
           tulang: 0.1,
           jeroan: 0.0985,
-          jatah: 0.1,
+          pengurban: 0.1,
+        },
+        domba: {
+          karkas: 0.482,
+          daging: 0.45,
+          tulang: 0.1,
+          jeroan: 0.0985,
+          pengurban: 0.1,
         },
       };
 
-      function addAnimalRow(type = 'Sapi', weight = 300, count = 1) {
-        animals.push({
-          id: Date.now(),
-          type: type,
-          weight: parseFloat(weight),
-          count: parseInt(count),
-        });
-        renderAnimalTable();
-        calculateAll();
-        saveToLocalStorage();
+      let chartInstance = null;
+
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem(
+          'darkMode',
+          document.documentElement.classList.contains('dark'),
+        );
+        updateThemeIcon();
       }
 
-      function removeAnimalRow(id) {
-        animals = animals.filter((a) => a.id !== id);
-        renderAnimalTable();
-        calculateAll();
-        saveToLocalStorage();
-      }
-
-      function renderAnimalTable() {
-        const tbody = document.getElementById('animal-body');
-        tbody.innerHTML = '';
-
-        animals.forEach((animal) => {
-          const totalWeight = (animal.weight * animal.count).toFixed(1);
-
-          const row = document.createElement('tr');
-          row.className =
-            'border-b border-zinc-100 dark:border-zinc-700 last:border-none group';
-          row.innerHTML = `
-                    <td class="py-4">
-                        <span class="inline-block w-6 h-6 rounded-2xl text-center leading-6 text-lg ${animal.type === 'Sapi' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'}">
-                            ${animal.type === 'Sapi' ? '🐂' : '🐐'}
-                        </span>
-                    </td>
-                    <td class="py-4">
-                        <select onchange="updateAnimal(${animal.id}, 'type', this.value)" 
-                                class="bg-transparent border-0 focus:ring-0 text-base font-medium">
-                            <option value="Sapi" ${animal.type === 'Sapi' ? 'selected' : ''}>Sapi</option>
-                            <option value="Kambing" ${animal.type === 'Kambing' ? 'selected' : ''}>Kambing</option>
-                            <option value="Domba" ${animal.type === 'Domba' ? 'selected' : ''}>Domba</option>
-                        </select>
-                    </td>
-                    <td class="py-4">
-                        <input type="number" value="${animal.weight}" 
-                               onchange="updateAnimal(${animal.id}, 'weight', this.value)"
-                               class="w-24 bg-transparent border border-zinc-300 dark:border-zinc-600 focus:border-emerald-400 rounded-2xl px-3 py-2 text-right">
-                    </td>
-                    <td class="py-4">
-                        <input type="number" value="${animal.count}" 
-                               onchange="updateAnimal(${animal.id}, 'count', this.value)"
-                               class="w-20 bg-transparent border border-zinc-300 dark:border-zinc-600 focus:border-emerald-400 rounded-2xl px-3 py-2 text-right">
-                    </td>
-                    <td class="py-4 text-right font-semibold">${totalWeight} kg</td>
-                    <td class="py-4">
-                        <button onclick="removeAnimalRow(${animal.id})" 
-                                class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-          tbody.appendChild(row);
-        });
-
-        if (animals.length === 0) {
-          tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="py-12 text-center text-zinc-400">
-                            <i class="fas fa-box-open text-4xl mb-3"></i>
-                            <p>Belum ada data hewan</p>
-                            <button onclick="addAnimalRow()" 
-                                    class="mt-4 text-emerald-600 hover:underline">+ Tambah hewan pertama</button>
-                        </td>
-                    </tr>
-                `;
+      function updateThemeIcon() {
+        const icon = document.getElementById('theme-icon');
+        if (document.documentElement.classList.contains('dark')) {
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        } else {
+          icon.classList.add('fa-moon');
+          icon.classList.remove('fa-sun');
         }
       }
 
-      function updateAnimal(id, field, value) {
-        const animal = animals.find((a) => a.id === id);
-        if (animal) {
-          if (field === 'weight') animal.weight = parseFloat(value) || 0;
-          if (field === 'count') animal.count = parseInt(value) || 0;
-          if (field === 'type') animal.type = value;
-          renderAnimalTable();
-          calculateAll();
-          saveToLocalStorage();
-        }
+      function addRow(type = 'sapi', weight = 450, qty = 1) {
+        const tbody = document.getElementById('animalTable');
+        const row = document.createElement('tr');
+        row.className = 'border-b border-slate-200 dark:border-slate-700';
+        row.innerHTML = `
+                <td class="py-4">
+                    <select class="type w-full bg-transparent focus:outline-none">
+                        <option value="sapi" ${type === 'sapi' ? 'selected' : ''}>Sapi</option>
+                        <option value="kambing" ${type === 'kambing' ? 'selected' : ''}>Kambing</option>
+                        <option value="domba" ${type === 'domba' ? 'selected' : ''}>Domba</option>
+                    </select>
+                </td>
+                <td class="py-4"><input type="number" class="weight w-24 bg-transparent focus:outline-none" value="${weight}"></td>
+                <td class="py-4"><input type="number" class="qty w-20 bg-transparent focus:outline-none" value="${qty}"></td>
+                <td class="py-4">
+                    <button onclick="this.closest('tr').remove(); calculate()" class="text-red-500 hover:text-red-600">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            `;
+        tbody.appendChild(row);
+        row
+          .querySelectorAll('input, select')
+          .forEach((el) => el.addEventListener('input', calculate));
+        calculate();
       }
 
-      function calculateCarcass() {
-        let totalSapi = 0,
-          totalKambing = 0;
-        let sapiLBW = 0,
-          kambingLBW = 0;
+      function calculate() {
+        const rows = [...document.querySelectorAll('#animalTable tr')].map(
+          (row) => ({
+            type: row.querySelector('.type').value,
+            weight: parseFloat(row.querySelector('.weight').value) || 0,
+            qty: parseFloat(row.querySelector('.qty').value) || 0,
+          }),
+        );
 
-        animals.forEach((animal) => {
-          const lbw = animal.weight * animal.count;
-          if (animal.type === 'Sapi') {
-            totalSapi += animal.count;
-            sapiLBW += lbw;
+        let sapiData = {
+          karkas: 0,
+          daging: 0,
+          tulang: 0,
+          jeroan: 0,
+          pengurban: 0,
+        };
+        let goatData = {
+          karkas: 0,
+          daging: 0,
+          tulang: 0,
+          jeroan: 0,
+          pengurban: 0,
+        };
+
+        let sumSapi = 0,
+          sumKambing = 0,
+          sumDomba = 0,
+          totalBobot = 0;
+
+        rows.forEach((r) => {
+          const totalWeight = r.weight * r.qty;
+          totalBobot += totalWeight;
+          const std = standards[r.type];
+          const karkas = totalWeight * std.karkas;
+
+          const result = {
+            karkas,
+            daging: karkas * std.daging,
+            tulang: karkas * std.tulang,
+            jeroan: karkas * std.jeroan,
+            pengurban: karkas * std.pengurban,
+          };
+
+          if (r.type === 'sapi') {
+            sumSapi += r.qty;
+            Object.keys(sapiData).forEach((k) => (sapiData[k] += result[k]));
           } else {
-            totalKambing += animal.count;
-            kambingLBW += lbw;
+            if (r.type === 'kambing') sumKambing += r.qty;
+            if (r.type === 'domba') sumDomba += r.qty;
+            Object.keys(goatData).forEach((k) => (goatData[k] += result[k]));
           }
         });
 
-        // Sapi
-        const sapiKarkas = sapiLBW * CONST.sapi.karkas;
-        const sapiDaging = sapiKarkas * CONST.sapi.daging;
-        const sapiTulang = sapiKarkas * CONST.sapi.tulang;
-        const sapiJeroan = sapiKarkas * CONST.sapi.jeroan;
-        const sapiJatah = sapiKarkas * CONST.sapi.jatah;
+        // Update Summary
+        document.getElementById('sumSapi').textContent = sumSapi;
+        document.getElementById('sumKambing').textContent = sumKambing;
+        document.getElementById('sumDomba').textContent = sumDomba;
+        document.getElementById('sumTotal').textContent =
+          sumSapi + sumKambing + sumDomba;
+        document.getElementById('sumBobot').textContent =
+          totalBobot.toFixed(1) + ' Kg';
 
-        // Kambing/Domba
-        const kambingKarkas = kambingLBW * CONST.kambing.karkas;
-        const kambingDaging = kambingKarkas * CONST.kambing.daging;
-        const kambingTulang = kambingKarkas * CONST.kambing.tulang;
-        const kambingJeroan = kambingKarkas * CONST.kambing.jeroan;
-        const kambingJatah = kambingKarkas * CONST.kambing.jatah;
+        // Render Results
+        renderResult('cowResult', sapiData);
+        renderResult('goatResult', goatData);
 
-        return {
-          sapi: {
-            count: totalSapi,
-            lbw: sapiLBW,
-            karkas: sapiKarkas,
-            daging: sapiDaging,
-            tulang: sapiTulang,
-            jeroan: sapiJeroan,
-            jatah: sapiJatah,
-          },
-          kambing: {
-            count: totalKambing,
-            lbw: kambingLBW,
-            karkas: kambingKarkas,
-            daging: kambingDaging,
-            tulang: kambingTulang,
-            jeroan: kambingJeroan,
-            jatah: kambingJatah,
-          },
-        };
+        simulateDistribution(sapiData, goatData);
       }
 
-      function renderSummaryCards(data) {
-        const container = document.getElementById('summary-cards');
-        container.innerHTML = `
-                <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800 card-hover">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-emerald-600 text-4xl font-bold">${data.sapi.count}</div>
-                            <div class="text-sm text-zinc-500">Ekors Sapi</div>
-                        </div>
-                        <div class="text-4xl">🐂</div>
-                    </div>
-                    <div class="mt-6 text-xs text-zinc-400">${data.sapi.lbw.toFixed(1)} kg total</div>
-                </div>
-                
-                <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800 card-hover">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-emerald-600 text-4xl font-bold">${data.kambing.count}</div>
-                            <div class="text-sm text-zinc-500">Ekors Kambing/Domba</div>
-                        </div>
-                        <div class="text-4xl">🐐</div>
-                    </div>
-                    <div class="mt-6 text-xs text-zinc-400">${data.kambing.lbw.toFixed(1)} kg total</div>
-                </div>
-                
-                <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800 card-hover col-span-2 md:col-span-1">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="text-3xl font-bold">${(data.sapi.lbw + data.kambing.lbw).toFixed(0)}</div>
-                            <div class="text-sm text-zinc-500">Total Bobot</div>
-                        </div>
-                        <i class="fas fa-weight-hanging text-4xl text-zinc-300"></i>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-100 dark:border-zinc-800 card-hover">
-                    <div class="text-xs text-zinc-500">Total Karkas</div>
-                    <div class="text-4xl font-bold text-emerald-600">${(data.sapi.karkas + data.kambing.karkas).toFixed(1)} kg</div>
+      function renderResult(id, data) {
+        document.getElementById(id).innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between bg-slate-100 dark:bg-slate-700 px-4 py-3 rounded-2xl"><span>Karkas</span><strong>${data.karkas.toFixed(1)} kg</strong></div>
+                    <div class="flex justify-between bg-slate-100 dark:bg-slate-700 px-4 py-3 rounded-2xl"><span>Daging</span><strong>${data.daging.toFixed(1)} kg</strong></div>
+                    <div class="flex justify-between bg-slate-100 dark:bg-slate-700 px-4 py-3 rounded-2xl"><span>Tulang</span><strong>${data.tulang.toFixed(1)} kg</strong></div>
+                    <div class="flex justify-between bg-slate-100 dark:bg-slate-700 px-4 py-3 rounded-2xl"><span>Jeroan</span><strong>${data.jeroan.toFixed(1)} kg</strong></div>
                 </div>
             `;
       }
 
-      function renderCarcassResults(data) {
-        // Sapi
-        const sapiHTML = `
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-zinc-500 text-xs">Karkas</div>
-                        <div class="font-semibold">${data.sapi.karkas.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-emerald-600 text-xs">Daging</div>
-                        <div class="font-semibold">${data.sapi.daging.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-amber-600 text-xs">Tulang</div>
-                        <div class="font-semibold">${data.sapi.tulang.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-orange-600 text-xs">Jeroan</div>
-                        <div class="font-semibold">${data.sapi.jeroan.toFixed(1)} kg</div>
-                    </div>
-                </div>
-            `;
-        document.getElementById('sapi-result').innerHTML = sapiHTML;
-
-        // Kambing
-        const kambingHTML = `
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-zinc-500 text-xs">Karkas</div>
-                        <div class="font-semibold">${data.kambing.karkas.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-emerald-600 text-xs">Daging</div>
-                        <div class="font-semibold">${data.kambing.daging.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-amber-600 text-xs">Tulang</div>
-                        <div class="font-semibold">${data.kambing.tulang.toFixed(1)} kg</div>
-                    </div>
-                    <div class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-2xl">
-                        <div class="text-orange-600 text-xs">Jeroan</div>
-                        <div class="font-semibold">${data.kambing.jeroan.toFixed(1)} kg</div>
-                    </div>
-                </div>
-            `;
-        document.getElementById('kambing-result').innerHTML = kambingHTML;
-      }
-
-      function simulateDistribution() {
-        const data = calculateCarcass();
-
-        const dSapi =
-          parseFloat(document.getElementById('daging-sapi-g').value) || 900;
-        const dKambing =
-          parseFloat(document.getElementById('daging-kambing-g').value) || 700;
+      function simulateDistribution(sapi, goat) {
+        const beef =
+          Number(document.getElementById('beefInput').value) / 1000 || 0;
+        const goatMeat =
+          Number(document.getElementById('goatInput').value) / 1000 || 0;
         const jeroan =
-          parseFloat(document.getElementById('jeroan-g').value) || 200;
+          Number(document.getElementById('jeroanInput').value) / 1000 || 0;
         const tulang =
-          parseFloat(document.getElementById('tulang-g').value) || 300;
+          Number(document.getElementById('tulangInput').value) / 1000 || 0;
 
-        // Total daging tersedia
-        const totalDaging = data.sapi.daging + data.kambing.daging;
+        const totalPerBag = beef + goatMeat + jeroan + tulang;
+        document.getElementById('bagWeight').textContent =
+          totalPerBag.toFixed(2) + ' Kg';
 
-        // Hitung maksimal kresek (berdasarkan daging paling terbatas)
-        let maxBySapi =
-          data.sapi.daging > 0
-            ? Math.floor((data.sapi.daging * 1000) / dSapi)
-            : 9999;
-        let maxByKambing =
-          data.kambing.daging > 0
-            ? Math.floor((data.kambing.daging * 1000) / dKambing)
-            : 9999;
+        const maxBeef = beef > 0 ? sapi.daging / beef : Infinity;
+        const maxGoat = goatMeat > 0 ? goat.daging / goatMeat : Infinity;
+        const maxJeroan =
+          jeroan > 0 ? (sapi.jeroan + goat.jeroan) / jeroan : Infinity;
+        const maxTulang =
+          tulang > 0 ? (sapi.tulang + goat.tulang) / tulang : Infinity;
 
-        const maxKresek = Math.min(maxBySapi, maxByKambing);
+        const maxBag = Math.floor(
+          Math.min(maxBeef, maxGoat, maxJeroan, maxTulang),
+        );
 
-        document.getElementById('max-kresek').textContent = maxKresek;
+        document.getElementById('maxBag').textContent = maxBag;
+        document.getElementById('couponTotal').textContent = maxBag;
+        document.getElementById('distributedWeight').textContent =
+          (maxBag * totalPerBag).toFixed(1) + ' Kg';
 
-        // Progress
-        const progressEl = document.getElementById('progress-bar');
-        const percent = Math.min((maxKresek / 300) * 100, 100); // asumsi target 300 kresek
-        progressEl.style.width = percent + '%';
+        // Status & Progress
+        let percent = Math.min((maxBag / 300) * 100, 100);
+        document.getElementById('stockBar').style.width = percent + '%';
 
-        const statusEl = document.getElementById('status-text');
-        if (maxKresek > 250) {
-          statusEl.textContent = '✅ Stok Aman';
-          statusEl.className = 'text-xs font-medium text-emerald-600';
-        } else if (maxKresek > 100) {
-          statusEl.textContent = '⚠️ Hampir Habis';
-          statusEl.className = 'text-xs font-medium text-amber-600';
+        const badge = document.getElementById('statusBadge');
+        if (maxBag > 150) {
+          badge.textContent = 'Aman';
+          badge.className =
+            'px-4 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
+        } else if (maxBag > 50) {
+          badge.textContent = 'Hampir Habis';
+          badge.className =
+            'px-4 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-700';
         } else {
-          statusEl.textContent = '❌ Stok Terbatas';
-          statusEl.className = 'text-xs font-medium text-red-600';
+          badge.textContent = 'Over';
+          badge.className =
+            'px-4 py-1 text-xs font-bold rounded-full bg-red-100 text-red-700';
         }
 
-        // Total kresek (gunakan max)
-        document.getElementById('total-kresek').textContent = maxKresek;
-
-        // Total kupon = total kresek (asumsi 1 kupon = 1 kresek)
-        document.getElementById('total-kupon').textContent = maxKresek;
-
-        // Sisa daging
-        const usedDaging = (maxKresek * dSapi + maxKresek * dKambing) / 1000;
-        const sisa = (totalDaging - usedDaging).toFixed(1);
-        document.getElementById('sisa-daging').textContent = sisa + ' kg';
-
-        renderChart(data, maxKresek);
+        renderChart(sapi, goat);
       }
 
-      function renderChart(data, maxKresek) {
+      function renderChart(sapi, goat) {
         const ctx = document.getElementById('distributionChart');
-
         if (chartInstance) chartInstance.destroy();
 
         chartInstance = new Chart(ctx, {
@@ -777,231 +535,63 @@
             datasets: [
               {
                 data: [
-                  data.sapi.daging,
-                  data.kambing.daging,
-                  data.sapi.jeroan + data.kambing.jeroan,
-                  data.sapi.tulang + data.kambing.tulang,
+                  sapi.daging,
+                  goat.daging,
+                  sapi.jeroan + goat.jeroan,
+                  sapi.tulang + goat.tulang,
                 ],
                 backgroundColor: ['#10b981', '#34d399', '#f59e0b', '#64748b'],
-                borderColor: '#fff',
-                borderWidth: 4,
               },
             ],
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  usePointStyle: true,
-                  padding: 25,
-                  font: { size: 13 },
-                },
-              },
-            },
-          },
+          options: { responsive: true, maintainAspectRatio: false },
         });
       }
 
-      function calculateAll() {
-        const data = calculateCarcass();
-        renderSummaryCards(data);
-        renderCarcassResults(data);
-        simulateDistribution();
-      }
-
-      function setPreset(mode) {
-        // Reset active buttons
-        document
-          .getElementById('btn-hemat')
-          .classList.remove('bg-white', 'dark:bg-zinc-700', 'shadow');
-        document
-          .getElementById('btn-normal')
-          .classList.remove('bg-white', 'dark:bg-zinc-700', 'shadow');
-        document
-          .getElementById('btn-premium')
-          .classList.remove('bg-white', 'dark:bg-zinc-700', 'shadow');
-
-        if (mode === 'hemat') {
-          document.getElementById('daging-sapi-g').value = 700;
-          document.getElementById('daging-kambing-g').value = 500;
-          document.getElementById('jeroan-g').value = 150;
-          document.getElementById('tulang-g').value = 150;
-          document
-            .getElementById('btn-hemat')
-            .classList.add('bg-white', 'dark:bg-zinc-700', 'shadow');
-        } else if (mode === 'normal') {
-          document.getElementById('daging-sapi-g').value = 900;
-          document.getElementById('daging-kambing-g').value = 700;
-          document.getElementById('jeroan-g').value = 200;
-          document.getElementById('tulang-g').value = 300;
-          document
-            .getElementById('btn-normal')
-            .classList.add('bg-white', 'dark:bg-zinc-700', 'shadow');
-        } else if (mode === 'premium') {
-          document.getElementById('daging-sapi-g').value = 1200;
-          document.getElementById('daging-kambing-g').value = 900;
-          document.getElementById('jeroan-g').value = 300;
-          document.getElementById('tulang-g').value = 300;
-          document
-            .getElementById('btn-premium')
-            .classList.add('bg-white', 'dark:bg-zinc-700', 'shadow');
+      function preset(type) {
+        if (type === 'hemat') {
+          setValues(700, 500, 150, 200);
         }
-
-        simulateDistribution();
-      }
-
-      function toggleDarkMode() {
-        document.documentElement.classList.toggle('dark');
-        const icon = document.getElementById('theme-icon');
-        if (document.documentElement.classList.contains('dark')) {
-          icon.classList.remove('fa-moon');
-          icon.classList.add('fa-sun');
-          localStorage.setItem('darkMode', 'true');
-        } else {
-          icon.classList.add('fa-moon');
-          icon.classList.remove('fa-sun');
-          localStorage.setItem('darkMode', 'false');
+        if (type === 'normal') {
+          setValues(900, 700, 200, 300);
+        }
+        if (type === 'premium') {
+          setValues(1200, 900, 300, 300);
         }
       }
 
-      function saveToLocalStorage() {
-        localStorage.setItem('qurban_animals', JSON.stringify(animals));
-      }
-
-      function loadFromLocalStorage() {
-        const saved = localStorage.getItem('qurban_animals');
-        if (saved) {
-          animals = JSON.parse(saved);
-        } else {
-          // Demo data
-          animals = [
-            { id: 1, type: 'Sapi', weight: 420, count: 3 },
-            { id: 2, type: 'Kambing', weight: 38, count: 12 },
-            { id: 3, type: 'Domba', weight: 35, count: 8 },
-          ];
-        }
-      }
-
-      function resetAllData() {
-        if (confirm('Reset semua data?')) {
-          animals = [];
-          localStorage.removeItem('qurban_animals');
-          renderAnimalTable();
-          calculateAll();
-        }
+      function setValues(beef, goat, jeroan, tulang) {
+        document.getElementById('beefInput').value = beef;
+        document.getElementById('goatInput').value = goat;
+        document.getElementById('jeroanInput').value = jeroan;
+        document.getElementById('tulangInput').value = tulang;
+        calculate();
       }
 
       function exportCSV() {
-        const data = calculateCarcass();
-        let csv =
-          'Jenis,Total Ekor,Total Bobot (kg),Karkas (kg),Daging (kg),Tulang (kg),Jeroan (kg)\n';
-
-        csv += `Sapi,${data.sapi.count},${data.sapi.lbw.toFixed(1)},${data.sapi.karkas.toFixed(1)},${data.sapi.daging.toFixed(1)},${data.sapi.tulang.toFixed(1)},${data.sapi.jeroan.toFixed(1)}\n`;
-        csv += `Kambing/Domba,${data.kambing.count},${data.kambing.lbw.toFixed(1)},${data.kambing.karkas.toFixed(1)},${data.kambing.daging.toFixed(1)},${data.kambing.tulang.toFixed(1)},${data.kambing.jeroan.toFixed(1)}\n`;
-
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'qurban_distribution.csv';
-        a.click();
+        alert('Fitur Export CSV akan diekspor (dalam versi lengkap).');
+        // Bisa dikembangkan lebih lanjut
       }
 
-      function generatePrintContent() {
-        const data = calculateCarcass();
-        const date = new Date().toLocaleDateString('id-ID', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        });
-        document.getElementById('print-date').textContent = date;
-
-        let html = `
-                <h2 class="text-2xl font-semibold mt-8 mb-4">1. Rekap Hewan Qurban</h2>
-                <table class="w-full border-collapse border border-zinc-300">
-                    <tr class="bg-zinc-100">
-                        <th class="border border-zinc-300 p-3 text-left">Jenis</th>
-                        <th class="border border-zinc-300 p-3 text-right">Ekor</th>
-                        <th class="border border-zinc-300 p-3 text-right">Total Bobot (kg)</th>
-                    </tr>
-                    <tr>
-                        <td class="border border-zinc-300 p-3">Sapi</td>
-                        <td class="border border-zinc-300 p-3 text-right">${data.sapi.count}</td>
-                        <td class="border border-zinc-300 p-3 text-right">${data.sapi.lbw.toFixed(1)}</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-zinc-300 p-3">Kambing &amp; Domba</td>
-                        <td class="border border-zinc-300 p-3 text-right">${data.kambing.count}</td>
-                        <td class="border border-zinc-300 p-3 text-right">${data.kambing.lbw.toFixed(1)}</td>
-                    </tr>
-                </table>
-                
-                <h2 class="text-2xl font-semibold mt-10 mb-4">2. Hasil Karkas</h2>
-                <div class="grid grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="font-medium mb-3">Sapi</h3>
-                        <p>Karkas: <strong>${data.sapi.karkas.toFixed(1)} kg</strong></p>
-                        <p>Daging: <strong>${data.sapi.daging.toFixed(1)} kg</strong></p>
-                    </div>
-                    <div>
-                        <h3 class="font-medium mb-3">Kambing/Domba</h3>
-                        <p>Karkas: <strong>${data.kambing.karkas.toFixed(1)} kg</strong></p>
-                        <p>Daging: <strong>${data.kambing.daging.toFixed(1)} kg</strong></p>
-                    </div>
-                </div>
-                
-                <div class="mt-12 text-center text-sm text-zinc-500">
-                    Dicetak pada ${date} • Qurban Distribution Calculator
-                </div>
-            `;
-        document.getElementById('print-content').innerHTML = html;
+      function resetData() {
+        if (confirm('Reset semua data?')) {
+          localStorage.clear();
+          location.reload();
+        }
       }
 
       // Initialize
-      function initializeApp() {
-        initTailwind();
-        loadFromLocalStorage();
-        renderAnimalTable();
-        calculateAll();
-
-        // Dark mode
-        if (
-          localStorage.getItem('darkMode') === 'true' ||
-          (!localStorage.getItem('darkMode') &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
+      window.onload = () => {
+        // Load dark mode
+        if (localStorage.getItem('darkMode') === 'true') {
           document.documentElement.classList.add('dark');
-          document.getElementById('theme-icon').classList.remove('fa-moon');
-          document.getElementById('theme-icon').classList.add('fa-sun');
         }
+        updateThemeIcon();
 
-        // Keyboard shortcut
-        document.addEventListener('keydown', function (e) {
-          if (e.ctrlKey && e.key === 'p') {
-            e.preventDefault();
-            window.print();
-          }
-        });
-
-        // Print handler
-        window.addEventListener('beforeprint', generatePrintContent);
-
-        // Demo: add one more if empty
-        if (animals.length === 0) {
-          addAnimalRow('Sapi', 450, 2);
-        }
-
-        console.log(
-          '%cQurban Distribution Calculator siap digunakan ✅',
-          'color:#10b981; font-family:monospace',
-        );
-      }
-
-      window.onload = initializeApp;
+        // Tambah data contoh
+        addRow('sapi', 420, 3);
+        addRow('kambing', 38, 15);
+      };
     </script>
   </body>
 </html>
