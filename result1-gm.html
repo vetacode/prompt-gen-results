@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jasa Website Pixel Perfect Depok | CariSolusi Digital</title>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1e40af;
+        --accent: #f87171;
+        --bg-light: #f8fafc;
+        --text-dark: #1e293b;
+        --text-gray: #64748b;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      body {
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Navigation */
+      nav {
+        padding: 20px 0;
+        display: block;
+        text-align: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .badge {
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 42px;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+      }
+
+      .hero p {
+        font-size: 18px;
+        color: var(--text-gray);
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      .cta-button {
+        background-color: var(--accent);
+        color: white;
+        padding: 18px 36px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 18px;
+        display: inline-block;
+        transition: transform 0.2s;
+        box-shadow: 0 10px 15px -3px rgba(248, 113, 113, 0.4);
+      }
+
+      /* Problem Section */
+      .problem-section {
+        background: #ffffff;
+        padding: 80px 0;
+        text-align: center;
+        border-top: 1px solid #eef2f6;
+      }
+
+      .section-title {
+        font-size: 30px;
+        margin-bottom: 40px;
+      }
+
+      /* Benefits Grid */
+      .grid {
+        display: table;
+        width: 100%;
+        border-spacing: 20px;
+        table-layout: fixed;
+      }
+
+      .grid-item {
+        display: table-cell;
+        background: var(--bg-light);
+        padding: 30px;
+        border-radius: 16px;
+        vertical-align: top;
+        text-align: left;
+      }
+
+      .grid-item h3 {
+        margin-bottom: 15px;
+        color: var(--primary);
+      }
+
+      /* Pricing */
+      .pricing {
+        padding: 80px 0;
+        background: var(--primary);
+        color: white;
+        text-align: center;
+      }
+
+      .pricing-card {
+        background: white;
+        color: var(--text-dark);
+        max-width: 400px;
+        margin: 40px auto 0;
+        padding: 40px;
+        border-radius: 24px;
+        position: relative;
+      }
+
+      .old-price {
+        text-decoration: line-through;
+        color: #94a3b8;
+        font-size: 20px;
+      }
+
+      .current-price {
+        font-size: 48px;
+        font-weight: 800;
+        display: block;
+        margin: 10px 0;
+      }
+
+      .fomo-tag {
+        background: #fef2f2;
+        color: #ef4444;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      /* FAQ */
+      .faq {
+        padding: 80px 0;
+      }
+
+      .faq-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .faq-item h4 {
+        margin-bottom: 10px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+        font-size: 14px;
+        color: var(--text-gray);
+      }
+
+      /* Floating WA */
+      .wa-float {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #25d366;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+      }
+
+      @media screen and (max-width: 768px) {
+        .grid,
+        .grid-item {
+          display: block;
+          width: 100%;
+          margin: 0 0 20px 0;
+        }
+        h1 {
+          font-size: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="#" class="logo"
+          >CariSolusi<span style="color: var(--text-dark)">Digital</span></a
+        >
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="container">
+        <span class="badge">Eksklusif UMKM Depok 📍</span>
+        <h1>
+          Ingin Bisnis Anda di Depok <br /><span style="color: var(--primary)"
+            >Ranking #1 di Google?</span
+          >
+        </h1>
+        <p>
+          Dapatkan jasa website pixel perfect yang modern, mobile-friendly, dan
+          pengerjaan kilat. Jadikan website Anda mesin pencari uang otomatis.
+        </p>
+        <a
+          href="https://wa.me/628123456789?text=Halo%20CariSolusi,%20saya%20mau%20pesan%20Jasa%20Website%20Pixel%20Perfect%20promo%20500rb%20untuk%20bisnis%20saya%20di%20Depok."
+          class="cta-button"
+          >AMBIL PROMO SLOT TERBATAS!</a
+        >
+      </div>
+    </section>
+
+    <section class="problem-section">
+      <div class="container">
+        <h2 class="section-title">
+          Banyak Bisnis di Depok Bagus, Tapi "Ghaib" di Internet.
+        </h2>
+        <p style="max-width: 800px; margin: 0 auto">
+          Apakah Anda kehilangan pelanggan karena kompetitor punya website yang
+          lebih profesional? Jangan biarkan bisnis Anda tertinggal. Kami
+          hadirkan solusi website yang bukan cuma cantik, tapi menghasilkan
+          closing.
+        </p>
+
+        <div class="grid" style="margin-top: 50px">
+          <div class="grid-item">
+            <h3>💎 Pixel Perfect</h3>
+            <p>
+              Desain presisi hingga detail terkecil. Terlihat profesional di
+              mata calon pelanggan Anda.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>🚀 Super Cepat</h3>
+            <p>
+              Loading di bawah 3 detik. Pastikan pengunjung tidak kabur karena
+              web lambat.
+            </p>
+          </div>
+          <div class="grid-item">
+            <h3>📱 Mobile Friendly</h3>
+            <p>
+              Tampilan sempurna di HP, Tablet, maupun Laptop. Siap diakses kapan
+              saja.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing">
+      <div class="container">
+        <h2>Hanya Untuk 5 Pendaftar Pertama Hari Ini</h2>
+        <div class="pricing-card">
+          <span class="fomo-tag">🔥 TERISA 2 SLOT LAGI</span>
+          <p style="margin-top: 20px">Paket Website Bisnis Lengkap</p>
+          <span class="old-price">Rp 1.500.000</span>
+          <span class="current-price">Rp 500.000</span>
+          <ul style="text-align: left; list-style: none; margin: 25px 0">
+            <li>✅ Hosting & Domain Aktif</li>
+            <li>✅ Desain Modern & Responsive</li>
+            <li>✅ Integrasi WhatsApp Chat</li>
+            <li>✅ Optimasi SEO Dasar (Depok Local)</li>
+            <li>✅ Pengerjaan 3-5 Hari Kerja</li>
+          </ul>
+          <a
+            href="https://wa.me/628123456789?text=Halo%20CariSolusi,%20saya%20mau%20pesan%20Jasa%20Website%20Pixel%20Perfect%20promo%20500rb%20untuk%20bisnis%20saya%20di%20Depok."
+            class="cta-button"
+            style="width: 100%"
+            >SAYA MAU PROMONYA!</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: 40px">
+          Pertanyaan Sering Diajukan
+        </h2>
+        <div class="faq-item">
+          <h4>Kenapa harganya sangat murah?</h4>
+          <p>
+            Kami sedang melakukan ekspansi portofolio khusus untuk UMKM di area
+            Depok (Tapos, Margonda, dll). Harga ini adalah harga perkenalan
+            terbatas.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h4>Apakah saya bisa mengedit isi website sendiri?</h4>
+          <p>
+            Ya! Kami memberikan akses penuh dan panduan sederhana agar Anda bisa
+            mengubah teks atau gambar kapan saja.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h4>Di mana lokasi kantor CariSolusi?</h4>
+          <p>
+            Kami berbasis di CGE Tapos, Depok. Kami siap membantu sesama
+            pengusaha lokal Depok untuk go digital.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2024 CariSolusi Digital - CGE Tapos, Depok. <br />
+          Jasa Website Pixel Perfect Terpercaya.
+        </p>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/628123456789?text=Halo%20CariSolusi,%20saya%20mau%20pesan%20Jasa%20Website%20Pixel%20Perfect%20promo%20500rb%20untuk%20bisnis%20saya%20di%20Depok."
+      class="wa-float"
+    >
+      Hubungi via WhatsApp 📲
+    </a>
+  </body>
+</html>

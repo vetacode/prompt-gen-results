@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Jasa Website Pixel Perfect Depok | CariSolusi Digital</title>
+
+    <meta
+      name="description"
+      content="Jasa website pixel perfect di Depok untuk UMKM & bisnis lokal. Desain modern, mobile friendly, SEO-friendly, dan siap membantu bisnis Anda tampil profesional di Google."
+    />
+
+    <meta
+      name="keywords"
+      content="jasa website pixel perfect, jasa website depok, jasa pembuatan website depok, website umkm depok, jasa website seo depok, website mobile friendly"
+    />
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --secondary: #eaf4ff;
+        --accent: #10b981;
+        --dark: #0f172a;
+        --gray: #64748b;
+        --border: #e2e8f0;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--dark);
+        background: #fff;
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      section {
+        padding: 80px 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.2;
+      }
+
+      h1 {
+        font-size: 56px;
+        font-weight: 800;
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        font-size: 40px;
+        margin-bottom: 20px;
+      }
+
+      p {
+        color: var(--gray);
+        font-size: 17px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 28px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s ease;
+        font-size: 16px;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+      }
+
+      .btn-secondary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .hero {
+        padding-top: 120px;
+        background: linear-gradient(to bottom, #f8fbff, #ffffff);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 60px;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #dbeafe;
+        border-radius: 100px;
+        color: var(--primary);
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .hero p {
+        margin-bottom: 30px;
+        font-size: 19px;
+      }
+
+      .hero-image {
+        position: relative;
+      }
+
+      .hero-image img {
+        width: 100%;
+        border-radius: 28px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+      }
+
+      .mini-trust {
+        display: flex;
+        gap: 18px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+
+      .mini-trust div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray);
+      }
+
+      .problem {
+        background: #f8fafc;
+      }
+
+      .problem-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .problem-card {
+        background: white;
+        padding: 28px;
+        border-radius: 22px;
+        border: 1px solid var(--border);
+      }
+
+      .problem-card i {
+        font-size: 26px;
+        color: #ef4444;
+        margin-bottom: 14px;
+      }
+
+      .section-title {
+        max-width: 760px;
+        margin: auto;
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+      }
+
+      .feature-card {
+        padding: 28px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        background: white;
+        transition: 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+      }
+
+      .feature-card i {
+        font-size: 28px;
+        color: var(--primary);
+        margin-bottom: 18px;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 12px;
+        font-size: 20px;
+      }
+
+      .cta-box {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        padding: 50px;
+        border-radius: 30px;
+        color: white;
+        text-align: center;
+        margin-top: 60px;
+      }
+
+      .cta-box p {
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 24px;
+      }
+
+      .testimonial-wrap {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .testimonial {
+        padding: 32px;
+        background: white;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+      }
+
+      .stars {
+        color: #f59e0b;
+        margin-bottom: 16px;
+      }
+
+      .pricing {
+        background: #f8fbff;
+      }
+
+      .pricing-card {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 50px;
+        border-radius: 30px;
+        border: 2px solid #bfdbfe;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(37, 99, 235, 0.1);
+      }
+
+      .price {
+        font-size: 60px;
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        color: var(--primary);
+        margin: 20px 0;
+      }
+
+      .price-list {
+        text-align: left;
+        margin: 30px 0;
+      }
+
+      .price-list li {
+        list-style: none;
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .price-list i {
+        color: var(--accent);
+        margin-right: 10px;
+      }
+
+      .guarantee-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      .guarantee-item {
+        background: white;
+        border: 1px solid var(--border);
+        padding: 28px;
+        text-align: center;
+        border-radius: 22px;
+      }
+
+      .guarantee-item i {
+        font-size: 30px;
+        margin-bottom: 16px;
+        color: var(--accent);
+      }
+
+      .faq {
+        background: #f8fafc;
+      }
+
+      .faq-item {
+        background: white;
+        padding: 26px;
+        border-radius: 18px;
+        margin-bottom: 18px;
+        border: 1px solid var(--border);
+      }
+
+      .faq-item h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .final-cta {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        text-align: center;
+      }
+
+      .final-cta p {
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 720px;
+        margin: auto;
+        margin-bottom: 30px;
+      }
+
+      .footer {
+        padding: 40px 0;
+        background: #fff;
+        border-top: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .footer p {
+        font-size: 14px;
+      }
+
+      .whatsapp-float {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 65px;
+        height: 65px;
+        background: #25d366;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        color: white;
+        font-size: 32px;
+        z-index: 999;
+        text-decoration: none;
+        box-shadow: 0 15px 35px rgba(37, 211, 102, 0.35);
+        animation: float 2s infinite;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: 1s;
+      }
+
+      .fade-up.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 992px) {
+        .hero-wrap,
+        problem-grid,
+        features-grid,
+        testimonial-wrap,
+        guarantee-grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 42px;
+        }
+
+        h2 {
+          font-size: 32px;
+        }
+
+        .hero {
+          padding-top: 90px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .guarantee-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .features-grid,
+        .guarantee-grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+
+        h2 {
+          font-size: 28px;
+        }
+
+        .hero p {
+          font-size: 16px;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .cta-box,
+        .pricing-card {
+          padding: 32px 24px;
+        }
+      }
+    </style>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "CariSolusi Digital",
+        "description": "Jasa website pixel perfect di Depok untuk UMKM dan bisnis lokal.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "CGE Tapos",
+          "addressLocality": "Depok",
+          "addressRegion": "Jawa Barat",
+          "addressCountry": "ID"
+        },
+        "areaServed": "Depok",
+        "priceRange": "Rp500000",
+        "telephone": "+62-812-XXXX-XXXX"
+      }
+    </script>
+  </head>
+
+  <body>
+    <a
+      href="https://wa.me/6281234567890"
+      class="whatsapp-float"
+      target="_blank"
+    >
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-wrap">
+          <div class="hero-content fade-up">
+            <div class="hero-badge">🔥 Website UMKM Modern & SEO Friendly</div>
+
+            <h1>
+              Jasa Website Pixel Perfect di Depok Untuk UMKM yang Ingin Cepat
+              Closing
+            </h1>
+
+            <p>
+              Website modern, mobile friendly, SEO-ready, dan pengerjaan cepat
+              untuk membantu bisnis Anda tampil profesional serta lebih mudah
+              ditemukan di Google.
+            </p>
+
+            <div style="display: flex; gap: 16px; flex-wrap: wrap">
+              <a href="https://wa.me/6281234567890" class="btn btn-primary">
+                <i class="fab fa-whatsapp"></i>
+                Konsultasi Gratis
+              </a>
+
+              <a href="#pricing" class="btn btn-secondary"> Lihat Harga </a>
+            </div>
+
+            <div class="mini-trust">
+              <div><i class="fa-solid fa-check"></i> SEO Friendly</div>
+              <div><i class="fa-solid fa-check"></i> Mobile Friendly</div>
+              <div><i class="fa-solid fa-check"></i> Fast Loading</div>
+              <div><i class="fa-solid fa-check"></i> Pengerjaan Cepat</div>
+            </div>
+          </div>
+
+          <div class="hero-image fade-up">
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"
+              alt="Jasa Website Depok"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="problem">
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Website Bisnis Anda Masih Seperti Ini?</h2>
+
+          <p>
+            Banyak bisnis lokal kehilangan calon pelanggan karena tampilan
+            website yang tidak profesional dan sulit ditemukan di Google.
+          </p>
+        </div>
+
+        <div class="problem-grid">
+          <div class="problem-card fade-up">
+            <i class="fa-solid fa-xmark"></i>
+            <h3>Sulit Ditemukan di Google</h3>
+            <p>
+              Pelanggan mencari layanan Anda, tetapi kompetitor yang muncul
+              lebih dulu.
+            </p>
+          </div>
+
+          <div class="problem-card fade-up">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <h3>Tidak Nyaman di HP</h3>
+            <p>Tampilan berantakan membuat calon pelanggan langsung keluar.</p>
+          </div>
+
+          <div class="problem-card fade-up">
+            <i class="fa-solid fa-face-frown"></i>
+            <h3>Kurang Meyakinkan</h3>
+            <p>Website lama membuat bisnis terlihat kurang profesional.</p>
+          </div>
+
+          <div class="problem-card fade-up">
+            <i class="fa-solid fa-money-bill-trend-up"></i>
+            <h3>Closing Menurun</h3>
+            <p>Calon pelanggan ragu menghubungi karena trust rendah.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Solusi Website Modern Siap Membantu Bisnis Anda Tumbuh</h2>
+
+          <p>
+            Didesain khusus untuk UMKM dan bisnis lokal di Depok agar tampil
+            lebih profesional dan siap bersaing di era digital.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <h3>Responsive Design</h3>
+            <p>Tampilan optimal di smartphone, tablet, dan desktop.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+            <h3>SEO Friendly</h3>
+            <p>Struktur website dibuat ramah Google.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-bolt"></i>
+            <h3>Fast Loading</h3>
+            <p>Loading cepat untuk meningkatkan pengalaman pengguna.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-brands fa-whatsapp"></i>
+            <h3>WhatsApp Ready</h3>
+            <p>Mempermudah calon pelanggan langsung chat.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <h3>Google Maps</h3>
+            <p>Membantu optimasi Local SEO Depok.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-palette"></i>
+            <h3>Modern UI</h3>
+            <p>Tampilan clean dan profesional meningkatkan trust.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>Basic Security</h3>
+            <p>Website lebih aman dan stabil.</p>
+          </div>
+
+          <div class="feature-card fade-up">
+            <i class="fa-solid fa-rocket"></i>
+            <h3>Pengerjaan Cepat</h3>
+            <p>Bisnis Anda bisa segera online dan menerima leads.</p>
+          </div>
+        </div>
+
+        <div class="cta-box fade-up">
+          <h2>Mau Website yang Siap Dipakai Closing?</h2>
+
+          <p>
+            Jangan kalah dengan kompetitor yang sudah lebih dulu tampil
+            profesional di Google.
+          </p>
+
+          <a href="https://wa.me/6281234567890" class="btn btn-secondary">
+            <i class="fab fa-whatsapp"></i>
+            Chat WhatsApp Sekarang
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Testimoni UMKM & Bisnis Lokal</h2>
+
+          <p>
+            Bisnis lokal mulai naik kelas dengan website modern dan
+            SEO-friendly.
+          </p>
+        </div>
+
+        <div class="testimonial-wrap">
+          <div class="testimonial fade-up">
+            <div class="stars">★★★★★</div>
+
+            <p>
+              “Website-nya tampil profesional dan pelanggan jadi lebih percaya.”
+            </p>
+
+            <br />
+
+            <strong>Owner Bengkel - Depok</strong>
+          </div>
+
+          <div class="testimonial fade-up">
+            <div class="stars">★★★★★</div>
+
+            <p>“Proses cepat, desain modern, dan tampil bagus di HP.”</p>
+
+            <br />
+
+            <strong>UMKM Kuliner</strong>
+          </div>
+
+          <div class="testimonial fade-up">
+            <div class="stars">★★★★★</div>
+
+            <p>
+              “Sekarang bisnis terlihat lebih profesional dan mudah ditemukan.”
+            </p>
+
+            <br />
+
+            <strong>Jasa Interior</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Investasi Kecil Untuk Tampilan Bisnis yang Lebih Profesional</h2>
+
+          <p>
+            Harga terjangkau untuk UMKM yang ingin mulai serius di digital
+            marketing.
+          </p>
+        </div>
+
+        <div class="pricing-card fade-up">
+          <h3>Paket Website UMKM</h3>
+
+          <div class="price">Rp500K</div>
+
+          <ul class="price-list">
+            <li><i class="fa-solid fa-check"></i> Website Modern</li>
+            <li><i class="fa-solid fa-check"></i> Mobile Friendly</li>
+            <li><i class="fa-solid fa-check"></i> SEO Basic</li>
+            <li><i class="fa-solid fa-check"></i> Integrasi WhatsApp</li>
+            <li><i class="fa-solid fa-check"></i> Google Maps</li>
+            <li><i class="fa-solid fa-check"></i> Fast Loading</li>
+            <li><i class="fa-solid fa-check"></i> Support Publish</li>
+          </ul>
+
+          <a href="https://wa.me/6281234567890" class="btn btn-primary">
+            🔥 Booking Sekarang
+          </a>
+
+          <p style="margin-top: 18px; font-size: 14px">
+            Harga promo dapat berubah sewaktu-waktu mengikuti antrean
+            pengerjaan.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Kenapa Memilih CariSolusi Digital?</h2>
+
+          <p>
+            Fokus membantu UMKM dan bisnis lokal tampil lebih profesional di
+            internet.
+          </p>
+        </div>
+
+        <div class="guarantee-grid">
+          <div class="guarantee-item fade-up">
+            <i class="fa-solid fa-thumbs-up"></i>
+            <h3>Trusted</h3>
+            <p>Fokus untuk bisnis lokal dan UMKM.</p>
+          </div>
+
+          <div class="guarantee-item fade-up">
+            <i class="fa-solid fa-headset"></i>
+            <h3>Fast Support</h3>
+            <p>Konsultasi cepat dan mudah.</p>
+          </div>
+
+          <div class="guarantee-item fade-up">
+            <i class="fa-solid fa-ranking-star"></i>
+            <h3>SEO Ready</h3>
+            <p>Optimasi dasar agar mudah ditemukan Google.</p>
+          </div>
+
+          <div class="guarantee-item fade-up">
+            <i class="fa-solid fa-clock"></i>
+            <h3>Quick Delivery</h3>
+            <p>Pengerjaan efisien dan cepat online.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="container">
+        <div class="section-title fade-up">
+          <h2>Pertanyaan yang Sering Ditanyakan</h2>
+        </div>
+
+        <div class="faq-item fade-up">
+          <h3>Apakah website bisa dibuka di HP?</h3>
+          <p>Ya. Semua website dibuat mobile friendly dan responsive.</p>
+        </div>
+
+        <div class="faq-item fade-up">
+          <h3>Apakah website bisa muncul di Google?</h3>
+          <p>
+            Website dibuat SEO-friendly agar lebih mudah terindex dan relevan
+            untuk pencarian lokal.
+          </p>
+        </div>
+
+        <div class="faq-item fade-up">
+          <h3>Berapa lama proses pengerjaan?</h3>
+          <p>Estimasi pengerjaan relatif cepat tergantung kebutuhan halaman.</p>
+        </div>
+
+        <div class="faq-item fade-up">
+          <h3>Apakah saya bisa konsultasi dulu?</h3>
+          <p>Tentu. Konsultasi awal gratis via WhatsApp.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container fade-up">
+        <h2>Jangan Sampai Kompetitor Anda Lebih Dulu Mendominasi Google</h2>
+
+        <p>
+          Semakin lama bisnis Anda tidak memiliki website profesional, semakin
+          banyak peluang pelanggan yang berpindah ke kompetitor.
+        </p>
+
+        <a href="https://wa.me/6281234567890" class="btn btn-secondary">
+          <i class="fab fa-whatsapp"></i>
+          Chat WhatsApp Sekarang
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <h3>CariSolusi Digital</h3>
+
+        <p>Jasa Website Pixel Perfect Depok • CGE Tapos Depok</p>
+      </div>
+    </footer>
+
+    <script>
+      const fadeElements = document.querySelectorAll('.fade-up');
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+            }
+          });
+        },
+        {
+          threshold: 0.2,
+        },
+      );
+
+      fadeElements.forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>
