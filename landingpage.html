@@ -1,0 +1,1350 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page Prompt Generator</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      body {
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(59, 130, 246, 0.18),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(168, 85, 247, 0.12),
+            transparent 25%
+          ),
+          #0b1120;
+      }
+
+      .glass {
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .glow {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+      }
+
+      .input {
+        @apply w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all;
+      }
+
+      .label {
+        @apply text-sm font-semibold text-slate-300 mb-2 block;
+      }
+
+      .card {
+        @apply glass rounded-3xl p-5 shadow-2xl;
+      }
+
+      .check-item {
+        @apply flex items-center gap-2 bg-slate-800/60 px-3 py-2 rounded-xl border border-slate-700 hover:border-blue-500 transition cursor-pointer;
+      }
+
+      .tab-btn.active {
+        @apply bg-blue-600 text-white;
+      }
+
+      .scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .scrollbar::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 999px;
+      }
+
+      .floating-btn {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .toast {
+        animation: slideIn 0.4s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .gradient-text {
+        background: linear-gradient(to right, #60a5fa, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+
+  <body class="text-white min-h-screen">
+    <!-- NAV -->
+    <header
+      class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-11 h-11 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div>
+            <h1 class="font-bold text-xl">Landing Page Prompt Generator</h1>
+            <p class="text-xs text-slate-400">
+              AI SaaS Conversion Prompt Engine
+            </p>
+          </div>
+        </div>
+
+        <button
+          id="themeToggle"
+          class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-xl transition"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <!-- HERO -->
+      <section class="mb-10" data-aos="fade-up">
+        <div class="card glow overflow-hidden relative">
+          <div
+            class="absolute inset-0 opacity-20 bg-gradient-to-r from-blue-500 to-purple-600"
+          ></div>
+
+          <div class="relative z-10">
+            <div
+              class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8"
+            >
+              <div>
+                <div
+                  class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full text-blue-300 text-sm mb-5"
+                >
+                  <i class="fa-solid fa-bolt"></i>
+                  AI Conversion Prompt Engine
+                </div>
+
+                <h2
+                  class="text-4xl lg:text-6xl font-black leading-tight max-w-4xl"
+                >
+                  Generate
+                  <span class="gradient-text"> High Conversion </span>
+                  Landing Page Prompt
+                </h2>
+
+                <p class="text-slate-300 mt-5 max-w-3xl leading-relaxed">
+                  Buat super prompt AI profesional untuk menghasilkan landing
+                  page modern, conversion-oriented, SEO optimized, GEO
+                  optimized, mobile-first, dan siap closing.
+                </p>
+
+                <div class="flex flex-wrap gap-3 mt-6">
+                  <div class="bg-slate-800/70 px-4 py-2 rounded-xl text-sm">
+                    <i class="fa-solid fa-mobile-screen mr-2 text-blue-400"></i>
+                    Mobile First
+                  </div>
+
+                  <div class="bg-slate-800/70 px-4 py-2 rounded-xl text-sm">
+                    <i class="fa-solid fa-chart-line mr-2 text-green-400"></i>
+                    Conversion Oriented
+                  </div>
+
+                  <div class="bg-slate-800/70 px-4 py-2 rounded-xl text-sm">
+                    <i
+                      class="fa-solid fa-magnifying-glass mr-2 text-purple-400"
+                    ></i>
+                    SEO + GEO Ready
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 min-w-[320px]">
+                <div class="card text-center">
+                  <div class="text-3xl font-black text-blue-400">100+</div>
+                  <div class="text-sm text-slate-400 mt-2">
+                    Prompt Variables
+                  </div>
+                </div>
+
+                <div class="card text-center">
+                  <div class="text-3xl font-black text-purple-400">AI</div>
+                  <div class="text-sm text-slate-400 mt-2">Prompt Engine</div>
+                </div>
+
+                <div class="card text-center">
+                  <div class="text-3xl font-black text-green-400">SEO</div>
+                  <div class="text-sm text-slate-400 mt-2">Optimization</div>
+                </div>
+
+                <div class="card text-center">
+                  <div class="text-3xl font-black text-yellow-400">GEO</div>
+                  <div class="text-sm text-slate-400 mt-2">Entity Ready</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- SIDEBAR -->
+        <aside class="lg:col-span-3">
+          <div class="sticky top-24 space-y-4">
+            <div class="card">
+              <h3 class="font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-blue-400"></i>
+                Quick Preset
+              </h3>
+
+              <div class="space-y-3">
+                <button
+                  onclick="loadPreset('local')"
+                  class="w-full bg-slate-800 hover:bg-blue-600 transition px-4 py-3 rounded-xl text-left"
+                >
+                  <i class="fa-solid fa-location-dot mr-2"></i>
+                  Local Business
+                </button>
+
+                <button
+                  onclick="loadPreset('luxury')"
+                  class="w-full bg-slate-800 hover:bg-purple-600 transition px-4 py-3 rounded-xl text-left"
+                >
+                  <i class="fa-solid fa-crown mr-2"></i>
+                  Luxury Premium
+                </button>
+
+                <button
+                  onclick="loadPreset('affiliate')"
+                  class="w-full bg-slate-800 hover:bg-orange-600 transition px-4 py-3 rounded-xl text-left"
+                >
+                  <i class="fa-solid fa-bullhorn mr-2"></i>
+                  Affiliate Sales
+                </button>
+
+                <button
+                  onclick="loadPreset('corporate')"
+                  class="w-full bg-slate-800 hover:bg-green-600 transition px-4 py-3 rounded-xl text-left"
+                >
+                  <i class="fa-solid fa-building mr-2"></i>
+                  Corporate
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-lightbulb text-yellow-400"></i>
+                Quick Generator
+              </h3>
+
+              <div class="space-y-3">
+                <button
+                  onclick="generateHeadline()"
+                  class="w-full bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/20 px-4 py-3 rounded-xl"
+                >
+                  Generate Headline
+                </button>
+
+                <button
+                  onclick="generateHook()"
+                  class="w-full bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/20 px-4 py-3 rounded-xl"
+                >
+                  Generate Hook
+                </button>
+
+                <button
+                  onclick="generateCTA()"
+                  class="w-full bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 px-4 py-3 rounded-xl"
+                >
+                  Generate CTA
+                </button>
+
+                <button
+                  onclick="generateSEO()"
+                  class="w-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 px-4 py-3 rounded-xl"
+                >
+                  Generate SEO
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="lg:col-span-9 space-y-6">
+          <!-- TABS -->
+          <div class="flex flex-wrap gap-3">
+            <button
+              class="tab-btn active px-5 py-3 rounded-2xl bg-slate-800 transition"
+              data-tab="business"
+            >
+              <i class="fa-solid fa-briefcase mr-2"></i>
+              Business
+            </button>
+
+            <button
+              class="tab-btn px-5 py-3 rounded-2xl bg-slate-800 transition"
+              data-tab="market"
+            >
+              <i class="fa-solid fa-users mr-2"></i>
+              Market
+            </button>
+
+            <button
+              class="tab-btn px-5 py-3 rounded-2xl bg-slate-800 transition"
+              data-tab="design"
+            >
+              <i class="fa-solid fa-palette mr-2"></i>
+              Design
+            </button>
+
+            <button
+              class="tab-btn px-5 py-3 rounded-2xl bg-slate-800 transition"
+              data-tab="seo"
+            >
+              <i class="fa-solid fa-magnifying-glass-chart mr-2"></i>
+              SEO + GEO
+            </button>
+          </div>
+
+          <!-- BUSINESS TAB -->
+          <div class="tab-content space-y-6" id="businessTab">
+            <div class="card" data-aos="fade-up">
+              <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i class="fa-solid fa-building text-blue-400"></i>
+                Informasi Bisnis
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label class="label">Nama Bisnis</label>
+                  <input
+                    id="businessName"
+                    class="input"
+                    placeholder="Contoh: Jasa Sedot WC Jakarta"
+                  />
+                </div>
+
+                <div>
+                  <label class="label">Jenis Bisnis</label>
+                  <input
+                    id="businessType"
+                    class="input"
+                    placeholder="Contoh: Jasa Lokal"
+                  />
+                </div>
+
+                <div>
+                  <label class="label">Produk / Jasa Utama</label>
+                  <input
+                    id="mainProduct"
+                    class="input"
+                    placeholder="Contoh: Sedot WC 24 Jam"
+                  />
+                </div>
+
+                <div>
+                  <label class="label">Harga Produk / Jasa</label>
+                  <input
+                    id="price"
+                    class="input"
+                    placeholder="Contoh: Mulai 150rb"
+                  />
+                </div>
+
+                <div>
+                  <label class="label">Kota Target</label>
+                  <input
+                    id="city"
+                    class="input"
+                    placeholder="Contoh: Jakarta Selatan"
+                  />
+                </div>
+
+                <div>
+                  <label class="label">Website / Social Media</label>
+                  <input id="website" class="input" placeholder="https://" />
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <label class="label">Unique Selling Point</label>
+                <textarea
+                  id="usp"
+                  class="input min-h-[110px]"
+                  placeholder="Tuliskan keunggulan utama bisnis"
+                ></textarea>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-5 mt-5">
+                <div>
+                  <label class="label">Garansi</label>
+                  <textarea
+                    id="guarantee"
+                    class="input min-h-[100px]"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label class="label">Bonus</label>
+                  <textarea id="bonus" class="input min-h-[100px]"></textarea>
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <label class="label">Kelebihan Dibanding Kompetitor</label>
+                <textarea
+                  id="advantages"
+                  class="input min-h-[120px]"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- GOAL -->
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-5">Tujuan Landing Page</h3>
+
+              <div class="grid md:grid-cols-3 gap-3">
+                <label class="check-item">
+                  <input type="radio" name="goal" value="closing WhatsApp" />
+                  Closing WhatsApp
+                </label>
+
+                <label class="check-item">
+                  <input type="radio" name="goal" value="lead generation" />
+                  Lead Generation
+                </label>
+
+                <label class="check-item">
+                  <input type="radio" name="goal" value="booking" />
+                  Booking
+                </label>
+
+                <label class="check-item">
+                  <input type="radio" name="goal" value="penjualan langsung" />
+                  Penjualan Langsung
+                </label>
+
+                <label class="check-item">
+                  <input
+                    type="radio"
+                    name="goal"
+                    value="webinar registration"
+                  />
+                  Webinar Registration
+                </label>
+
+                <label class="check-item">
+                  <input type="radio" name="goal" value="branding" />
+                  Branding
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- MARKET TAB -->
+          <div class="tab-content hidden space-y-6" id="marketTab">
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-6">Target Market</h3>
+
+              <div class="grid md:grid-cols-3 gap-3">
+                <label class="check-item"
+                  ><input type="checkbox" value="UMKM" />UMKM</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Corporate" />Corporate</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Ibu Rumah Tangga" />Ibu Rumah
+                  Tangga</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Mahasiswa" />Mahasiswa</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Owner Bisnis" />Owner
+                  Bisnis</label
+                >
+                <label class="check-item"
+                  ><input
+                    type="checkbox"
+                    value="Profesional"
+                  />Profesional</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Komunitas" />Komunitas</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Anak Muda" />Anak Muda</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Luxury Market" />Luxury
+                  Market</label
+                >
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-5 mt-6">
+                <div>
+                  <label class="label">Pain Point Market</label>
+                  <textarea
+                    id="painPoint"
+                    class="input min-h-[120px]"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label class="label">Ketakutan Market</label>
+                  <textarea id="fear" class="input min-h-[120px]"></textarea>
+                </div>
+
+                <div>
+                  <label class="label">Goals Market</label>
+                  <textarea id="goals" class="input min-h-[120px]"></textarea>
+                </div>
+
+                <div>
+                  <label class="label">Impian Market</label>
+                  <textarea id="dreams" class="input min-h-[120px]"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- COPYWRITING -->
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-6">Copywriting Strategy</h3>
+
+              <div class="grid md:grid-cols-3 gap-3">
+                <label class="check-item"
+                  ><input type="checkbox" value="AIDA" />AIDA</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="PAS" />PAS</label
+                >
+                <label class="check-item"
+                  ><input
+                    type="checkbox"
+                    value="Storytelling"
+                  />Storytelling</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Soft Selling" />Soft
+                  Selling</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Hard Selling" />Hard
+                  Selling</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="FOMO" />Fear of Missing
+                  Out</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Authority" />Authority
+                  Positioning</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Luxury" />Luxury
+                  Persuasion</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Emotional" />Emotional
+                  Selling</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- DESIGN TAB -->
+          <div class="tab-content hidden space-y-6" id="designTab">
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-6">Struktur Landing Page</h3>
+
+              <div class="grid md:grid-cols-3 gap-3" id="sectionsWrap">
+                <label class="check-item"
+                  ><input type="checkbox" value="Hero Section" />Hero
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Benefit Section" />Benefit
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Problem Section" />Problem
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Solution Section" />Solution
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Pricing Section" />Pricing
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Testimoni" />Testimoni</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="FAQ" />FAQ</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Gallery" />Gallery</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Portfolio" />Portfolio</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Process" />Process
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="Guarantee" />Guarantee
+                  Section</label
+                >
+                <label class="check-item"
+                  ><input type="checkbox" value="WhatsApp Floating" />WhatsApp
+                  Floating Button</label
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label class="label">Style Design</label>
+
+                  <select id="designStyle" class="input">
+                    <option>Luxury premium</option>
+                    <option>Clean minimalis</option>
+                    <option>Corporate professional</option>
+                    <option>Elegant modern</option>
+                    <option>Futuristic AI</option>
+                    <option>Dark premium</option>
+                    <option>High conversion sales page</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label">Nuansa Warna</label>
+
+                  <select id="colorStyle" class="input">
+                    <option>Biru Putih</option>
+                    <option>Hitam Emas</option>
+                    <option>Ungu Premium</option>
+                    <option>Merah Power</option>
+                    <option>Hijau Natural</option>
+                    <option>Monochrome Luxury</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label">Visual Direction</label>
+
+                  <select id="visualStyle" class="input">
+                    <option>Gambar Realistis</option>
+                    <option>Luxury Photography</option>
+                    <option>AI Futuristic</option>
+                    <option>Local Business Photography</option>
+                    <option>Modern Illustration</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label">SEO Structure</label>
+
+                  <select id="seoStructure" class="input">
+                    <option>Money Page SEO</option>
+                    <option>Local SEO Landing Page</option>
+                    <option>Lead Generation Page</option>
+                    <option>Longform Sales Page</option>
+                    <option>High Conversion Landing Page</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEO TAB -->
+          <div class="tab-content hidden space-y-6" id="seoTab">
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-6">GEO + SEO Optimization</h3>
+
+              <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label class="label">Keyword Utama</label>
+                  <input id="mainKeyword" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Keyword Turunan</label>
+                  <input id="secondaryKeyword" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Kecamatan Target</label>
+                  <input id="district" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Provinsi Target</label>
+                  <input id="province" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Negara</label>
+                  <input id="country" class="input" value="Indonesia" />
+                </div>
+
+                <div>
+                  <label class="label">Area Layanan</label>
+                  <input id="serviceArea" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Alamat Bisnis</label>
+                  <input id="address" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Nomor WhatsApp</label>
+                  <input id="whatsapp" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Email Bisnis</label>
+                  <input id="email" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Jam Operasional</label>
+                  <input id="hours" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Latitude</label>
+                  <input id="lat" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Longitude</label>
+                  <input id="lng" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">Google Maps Embed</label>
+                  <input id="maps" class="input" />
+                </div>
+
+                <div>
+                  <label class="label">URL Logo</label>
+                  <input id="logo" class="input" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OUTPUT -->
+          <div class="card glow">
+            <div
+              class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5"
+            >
+              <div>
+                <h3 class="text-2xl font-bold flex items-center gap-3">
+                  <i class="fa-solid fa-robot text-blue-400"></i>
+                  AI Prompt Output
+                </h3>
+
+                <p class="text-slate-400 mt-2">
+                  Generated conversion-focused landing page prompt
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button
+                  onclick="copyPrompt()"
+                  class="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl transition"
+                >
+                  <i class="fa-solid fa-copy mr-2"></i>
+                  Copy Prompt
+                </button>
+
+                <button
+                  onclick="downloadTXT()"
+                  class="bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl transition"
+                >
+                  <i class="fa-solid fa-file-lines mr-2"></i>
+                  Download TXT
+                </button>
+
+                <button
+                  onclick="downloadJSON()"
+                  class="bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl transition"
+                >
+                  <i class="fa-solid fa-file-code mr-2"></i>
+                  Download JSON
+                </button>
+
+                <button
+                  onclick="saveDraft()"
+                  class="bg-slate-800 hover:bg-slate-700 px-5 py-3 rounded-xl transition"
+                >
+                  <i class="fa-solid fa-floppy-disk mr-2"></i>
+                  Save Draft
+                </button>
+              </div>
+            </div>
+
+            <textarea
+              id="output"
+              class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-5 min-h-[500px] text-sm leading-relaxed scrollbar"
+            >
+            </textarea>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- FLOATING BUTTON -->
+    <button
+      onclick="generatePrompt()"
+      class="floating-btn fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-purple-600 hover:scale-105 transition-all px-6 py-4 rounded-2xl shadow-2xl font-bold"
+    >
+      <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+      Generate Prompt
+    </button>
+
+    <!-- TOAST -->
+    <div
+      id="toast"
+      class="hidden fixed top-5 right-5 z-50 bg-green-500 text-white px-5 py-4 rounded-2xl shadow-2xl toast"
+    ></div>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+      AOS.init({
+        duration: 700,
+        once: true,
+      });
+
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabs.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          contents.forEach((c) => c.classList.add('hidden'));
+
+          const tab = btn.dataset.tab;
+
+          document.getElementById(tab + 'Tab').classList.remove('hidden');
+        });
+      });
+
+      function getCheckedValues(selector) {
+        return [...document.querySelectorAll(selector)]
+          .filter((el) => el.checked)
+          .map((el) => el.value)
+          .join(', ');
+      }
+
+      function generatePrompt() {
+        const businessName = document.getElementById('businessName').value;
+        const businessType = document.getElementById('businessType').value;
+        const mainProduct = document.getElementById('mainProduct').value;
+        const price = document.getElementById('price').value;
+        const city = document.getElementById('city').value;
+        const website = document.getElementById('website').value;
+        const usp = document.getElementById('usp').value;
+        const guarantee = document.getElementById('guarantee').value;
+        const bonus = document.getElementById('bonus').value;
+        const advantages = document.getElementById('advantages').value;
+
+        const painPoint = document.getElementById('painPoint').value;
+        const fear = document.getElementById('fear').value;
+        const goals = document.getElementById('goals').value;
+        const dreams = document.getElementById('dreams').value;
+
+        const designStyle = document.getElementById('designStyle').value;
+        const colorStyle = document.getElementById('colorStyle').value;
+        const visualStyle = document.getElementById('visualStyle').value;
+        const seoStructure = document.getElementById('seoStructure').value;
+
+        const mainKeyword = document.getElementById('mainKeyword').value;
+        const secondaryKeyword =
+          document.getElementById('secondaryKeyword').value;
+        const district = document.getElementById('district').value;
+        const province = document.getElementById('province').value;
+        const country = document.getElementById('country').value;
+        const serviceArea = document.getElementById('serviceArea').value;
+        const address = document.getElementById('address').value;
+        const whatsapp = document.getElementById('whatsapp').value;
+        const email = document.getElementById('email').value;
+        const hours = document.getElementById('hours').value;
+        const lat = document.getElementById('lat').value;
+        const lng = document.getElementById('lng').value;
+        const maps = document.getElementById('maps').value;
+        const logo = document.getElementById('logo').value;
+
+        const market = getCheckedValues('#marketTab input[type="checkbox"]');
+        const copywriting = getCheckedValues(
+          '#marketTab .card:nth-child(2) input[type="checkbox"]',
+        );
+        const sections = getCheckedValues(
+          '#sectionsWrap input[type="checkbox"]',
+        );
+
+        const goalEl = document.querySelector('input[name="goal"]:checked');
+        const goal = goalEl ? goalEl.value : '';
+
+        const jsonLD = `
+{
+  "@context":"https://schema.org",
+  "@type":"LocalBusiness",
+  "name":"${businessName}",
+  "address":"${address}",
+  "telephone":"${whatsapp}",
+  "email":"${email}",
+  "areaServed":"${serviceArea}",
+  "openingHours":"${hours}",
+  "geo":{
+    "@type":"GeoCoordinates",
+    "latitude":"${lat}",
+    "longitude":"${lng}"
+  },
+  "url":"${website}",
+  "logo":"${logo}"
+}
+`;
+
+        const prompt = `
+Buatkan landing page modern siap closing dan conversion-oriented dengan spesifikasi berikut:
+
+==================================================
+INFORMASI BISNIS
+==================================================
+
+Nama Bisnis:
+${businessName}
+
+Jenis Bisnis:
+${businessType}
+
+Produk/Jasa Utama:
+${mainProduct}
+
+Harga:
+${price}
+
+Kota Target:
+${city}
+
+Website/Social Media:
+${website}
+
+USP:
+${usp}
+
+Garansi:
+${guarantee}
+
+Bonus:
+${bonus}
+
+Kelebihan Dibanding Kompetitor:
+${advantages}
+
+==================================================
+TARGET MARKET
+==================================================
+
+Target Market:
+${market}
+
+Pain Point:
+${painPoint}
+
+Ketakutan Market:
+${fear}
+
+Goals:
+${goals}
+
+Impian:
+${dreams}
+
+==================================================
+TUJUAN LANDING PAGE
+==================================================
+
+${goal}
+
+==================================================
+COPYWRITING STRATEGY
+==================================================
+
+Gunakan kombinasi:
+${copywriting}
+
+==================================================
+STRUKTUR SECTION
+==================================================
+
+Landing page harus memiliki:
+${sections}
+
+==================================================
+STYLE DESIGN
+==================================================
+
+Style:
+${designStyle}
+
+Nuansa Warna:
+${colorStyle}
+
+Visual:
+${visualStyle}
+
+==================================================
+SEO + GEO OPTIMIZATION
+==================================================
+
+SEO Structure:
+${seoStructure}
+
+Keyword Utama:
+${mainKeyword}
+
+Keyword Turunan:
+${secondaryKeyword}
+
+Kecamatan:
+${district}
+
+Provinsi:
+${province}
+
+Negara:
+${country}
+
+Area Layanan:
+${serviceArea}
+
+Alamat:
+${address}
+
+Google Maps:
+${maps}
+
+==================================================
+WAJIB DIBUATKAN
+==================================================
+
+1. Headline conversion oriented
+2. CTA kuat dan high CTR
+3. Mobile-first responsive design
+4. Sticky CTA button
+5. Floating WhatsApp button
+6. SEO optimized structure
+7. Semantic SEO
+8. GEO optimization
+9. Entity SEO optimization
+10. Internal linking suggestion
+11. Fast loading structure
+12. UX modern
+13. Visual hierarchy jelas
+14. Trust-building section
+15. Social proof section
+16. FAQ conversion oriented
+17. Urgency strategy
+18. CTA psychological trigger
+19. Responsive mobile navigation
+20. Modern animation ringan
+21. AOS animation recommendation
+22. Copywriting yang menjual
+23. Luxury modern UI
+24. Conversion focused layout
+25. Footer SEO optimized
+
+==================================================
+SEO OUTPUT
+==================================================
+
+Buatkan juga:
+- SEO title
+- Meta description
+- Meta keyword
+- Open Graph tag
+- Twitter Card tag
+- Canonical URL
+- ALT image recommendation
+- H1 recommendation
+- H2 recommendation
+- FAQ recommendation
+- LSI keyword recommendation
+- Semantic keyword recommendation
+- Local intent keyword recommendation
+
+==================================================
+SCHEMA MARKUP
+==================================================
+
+Buatkan:
+- LocalBusiness schema
+- Organization schema
+- Service schema
+- FAQ schema
+- Breadcrumb schema
+- Review schema
+
+Gunakan JSON-LD.
+
+Contoh data bisnis:
+${jsonLD}
+
+==================================================
+TEKNOLOGI LANDING PAGE
+==================================================
+
+Gunakan:
+- HTML
+- TailwindCSS
+- JavaScript
+
+Landing page harus:
+- responsive
+- clean UI
+- modern SaaS style
+- elegant
+- premium
+- conversion oriented
+- scalable
+- reusable component
+- sticky CTA
+- smooth animation
+- SEO ready
+
+==================================================
+VISUAL DIRECTION
+==================================================
+
+Gunakan:
+- gradient premium
+- soft shadow
+- rounded modern
+- clean layout
+- futuristic feel
+- professional SaaS UI
+- conversion-focused composition
+
+==================================================
+FINAL RESULT
+==================================================
+
+Hasil akhir harus berupa:
+landing page modern professional siap closing dengan struktur marketing kuat, SEO friendly, GEO optimized, dan conversion-oriented.
+`;
+
+        document.getElementById('output').value = prompt;
+
+        showToast('Prompt berhasil dibuat');
+      }
+
+      function copyPrompt() {
+        const text = document.getElementById('output');
+
+        text.select();
+        document.execCommand('copy');
+
+        showToast('Prompt berhasil dicopy');
+      }
+
+      function downloadTXT() {
+        const text = document.getElementById('output').value;
+
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'landing-page-prompt.txt';
+        a.click();
+
+        showToast('TXT berhasil didownload');
+      }
+
+      function downloadJSON() {
+        const data = {
+          prompt: document.getElementById('output').value,
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: 'application/json',
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'landing-page-prompt.json';
+        a.click();
+
+        showToast('JSON berhasil didownload');
+      }
+
+      function saveDraft() {
+        localStorage.setItem(
+          'lpPromptDraft',
+          document.getElementById('output').value,
+        );
+
+        showToast('Draft berhasil disimpan');
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById('toast');
+
+        toast.innerText = message;
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2500);
+      }
+
+      function generateHeadline() {
+        const headlines = [
+          'Naikkan Closing Dengan Landing Page Modern Siap Jual',
+          'Rahasia Landing Page High Conversion Untuk Bisnis Modern',
+          'Landing Page Premium Yang Dibuat Untuk Closing Lebih Cepat',
+          'Tingkatkan Penjualan Dengan Landing Page Conversion Oriented',
+          'Desain Landing Page Modern Untuk Maksimalkan Leads',
+        ];
+
+        alert(headlines[Math.floor(Math.random() * headlines.length)]);
+      }
+
+      function generateHook() {
+        const hooks = [
+          'Masih sepi closing meski iklan jalan?',
+          'Sudah traffic tinggi tapi conversion rendah?',
+          'Landing page lama bikin calon customer kabur?',
+          'Saatnya upgrade landing page jadi mesin closing.',
+          'Optimalkan trust dan conversion dalam satu halaman.',
+        ];
+
+        alert(hooks[Math.floor(Math.random() * hooks.length)]);
+      }
+
+      function generateCTA() {
+        const ctas = [
+          'Konsultasi Gratis Sekarang',
+          'Claim Penawaran Hari Ini',
+          'Hubungi WhatsApp Sekarang',
+          'Booking Jadwal Sekarang',
+          'Dapatkan Promo Spesial',
+        ];
+
+        alert(ctas[Math.floor(Math.random() * ctas.length)]);
+      }
+
+      function generateSEO() {
+        const keyword =
+          document.getElementById('mainKeyword').value || 'landing page';
+
+        alert(
+          `SEO Suggestion:
+
+Title:
+${keyword} Profesional Siap Closing
+
+Meta Description:
+Jasa ${keyword} modern, responsive, SEO friendly dan conversion oriented.
+
+LSI Keyword:
+- jasa ${keyword}
+- ${keyword} terbaik
+- ${keyword} profesional
+- ${keyword} modern
+- ${keyword} responsive
+`,
+        );
+      }
+
+      function loadPreset(type) {
+        if (type === 'local') {
+          document.getElementById('businessType').value = 'Jasa Lokal';
+          document.getElementById('designStyle').value = 'Local business';
+          document.getElementById('colorStyle').value = 'Hijau Natural';
+        }
+
+        if (type === 'luxury') {
+          document.getElementById('designStyle').value = 'Luxury premium';
+          document.getElementById('colorStyle').value = 'Hitam Emas';
+        }
+
+        if (type === 'affiliate') {
+          document.getElementById('designStyle').value =
+            'High conversion sales page';
+          document.getElementById('colorStyle').value = 'Orange Energetic';
+        }
+
+        if (type === 'corporate') {
+          document.getElementById('designStyle').value =
+            'Corporate professional';
+          document.getElementById('colorStyle').value = 'Biru Putih';
+        }
+
+        showToast('Preset berhasil diterapkan');
+      }
+
+      window.onload = () => {
+        const draft = localStorage.getItem('lpPromptDraft');
+
+        if (draft) {
+          document.getElementById('output').value = draft;
+        }
+      };
+    </script>
+  </body>
+</html>
