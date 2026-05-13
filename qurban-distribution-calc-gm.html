@@ -227,10 +227,18 @@
 
       <!-- SIMULASI MODULAR -->
       <section class="space-y-6">
-        <h2 class="text-xl font-bold flex items-center gap-2">
-          <i class="fas fa-layer-group text-emerald-600"></i> Pengaturan &
-          Simulasi Paket Modular
-        </h2>
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-bold flex items-center gap-2">
+            <i class="fas fa-layer-group text-emerald-600"></i> Pengaturan &
+            Simulasi Paket Modular
+          </h2>
+          <button
+            onclick="optimizeKupon()"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-xl text-sm font-black transition shadow-lg flex items-center gap-2 no-print"
+          >
+            <i class="fas fa-magic"></i> OPTIMIZE KUPON
+          </button>
+        </div>
 
         <div class="grid md:grid-cols-3 gap-6">
           <!-- 1. PAKET PREMIUM -->
@@ -457,8 +465,18 @@
             <span id="error-text"></span>
           </div>
 
-          <div class="h-64">
-            <canvas id="distributionChart"></canvas>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 h-64">
+              <canvas id="distributionChart"></canvas>
+            </div>
+            <div class="h-64">
+              <p
+                class="text-[10px] font-bold text-center uppercase mb-2 text-slate-400"
+              >
+                Sisa Jeroan & Tulang (Kg)
+              </p>
+              <canvas id="extraChart"></canvas>
+            </div>
           </div>
         </div>
       </section>
@@ -481,6 +499,106 @@
     </main>
 
     <script>
+      // Logic Tambahan Khusus untuk Section Pengaturan & simulasi paket modular
+      let extraChart;
+
+      function optimizeKupon() {
+        // Ambil data stok saat ini dari kalkulasi sebelumnya (global sapi & goat object)
+        const rows = getRowsData();
+        let sapiStok = 0;
+        let goatStok = 0;
+        rows.forEach((r) => {
+          const karkas = r.weight * r.qty * standards[r.type].karkas;
+          if (r.type === 'sapi') sapiStok += karkas * standards[r.type].daging;
+          else goatStok += karkas * standards[r.type].daging;
+        });
+
+        // Strategy: Utamakan Paket Hemat (Mix) jika ada kambing, lalu Normal, lalu Premium
+        const h_beef_req =
+          Number(document.getElementById('h_beef').value) / 1000;
+        const h_goat_req =
+          Number(document.getElementById('h_goat').value) / 1000;
+        const n_beef_req =
+          Number(document.getElementById('n_beef').value) / 1000;
+        const p_beef_req =
+          Number(document.getElementById('p_beef').value) / 1000;
+
+        let h_qty = 0;
+        let n_qty = 0;
+        let p_qty = 0;
+
+        // 1. Habiskan stok kambing ke paket hemat
+        if (h_goat_req > 0) h_qty = Math.floor(goatStok / h_goat_req);
+        sapiStok -= h_qty * h_beef_req;
+
+        // 2. Jika sapi masih ada, buat paket normal
+        if (sapiStok > 0) n_qty = Math.floor(sapiStok / n_beef_req);
+        sapiStok -= n_qty * n_beef_req;
+
+        // 3. Masukkan ke input UI
+        document.getElementById('h_qty').value = h_qty;
+        document.getElementById('n_qty').value = n_qty;
+        document.getElementById('p_qty').value = 0;
+
+        calculate();
+      }
+
+      // Override / Extend fungsi simulate yang lama untuk merender grafik tambahan
+      const originalSimulate = simulate;
+      simulate = function (sapi, goat) {
+        originalSimulate(sapi, goat);
+
+        // Hitung sisa spesifik untuk grafik kecil
+        const p = {
+          j: Number(document.getElementById('p_jeroan').value) / 1000,
+          q: Number(document.getElementById('p_qty').value),
+        };
+        const n = {
+          j: Number(document.getElementById('n_jeroan').value) / 1000,
+          t: Number(document.getElementById('n_tulang').value) / 1000,
+          q: Number(document.getElementById('n_qty').value),
+        };
+        const h = {
+          j: Number(document.getElementById('h_jeroan').value) / 1000,
+          t: Number(document.getElementById('h_tulang').value) / 1000,
+          q: Number(document.getElementById('h_qty').value),
+        };
+
+        const remJeroan =
+          sapi.jeroan + goat.jeroan - (p.j * p.q + n.j * n.q + h.j * h.q);
+        const remTulang = sapi.tulang + goat.tulang - (n.t * n.q + h.t * h.q);
+
+        renderExtraChart(remJeroan, remTulang);
+      };
+
+      function renderExtraChart(jeroan, tulang) {
+        const ctx = document.getElementById('extraChart').getContext('2d');
+        if (extraChart) extraChart.destroy();
+        extraChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Sisa Jeroan', 'Sisa Tulang'],
+            datasets: [
+              {
+                data: [Math.max(0, jeroan), Math.max(0, tulang)],
+                backgroundColor: ['#f59e0b', '#64748b'],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { boxWidth: 10, font: { size: 10 } },
+              },
+            },
+            cutout: '70%',
+          },
+        });
+      }
       // STANDAR RUMUS
       const standards = {
         sapi: {
